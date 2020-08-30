@@ -55,6 +55,10 @@ public class Player implements Comparable<Player> {
         this.pontos = pontos;
     }
 
+    public void damage(int pontos){
+        this.pontos -= pontos;
+    }
+
     public void setMapa(String mapa) {
         this.mapa = mapa;
     }

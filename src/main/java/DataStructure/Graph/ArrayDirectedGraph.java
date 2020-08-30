@@ -103,7 +103,7 @@ public class ArrayDirectedGraph<T> implements GraphADT<T> {
         }
     }
 
-    protected int getIndex(T vertex) {
+    public int getIndex(T vertex) {
         boolean found = false;
         int current = 0, index = -1;
         while (!found && current < this.numVertices) {

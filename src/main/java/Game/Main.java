@@ -5,6 +5,8 @@ import DataStructure.Exceptions.EmptyCollectionException;
 import DataStructure.Exceptions.NoPathAvailable;
 import DataStructure.Graph.Network.PathCostVerticeWithElement;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -38,6 +40,8 @@ public class Main {
     public static void main(String[] args) throws EmptyCollectionException, NoPathAvailable, ElementNotFoundException {
         GameManagement gameMan = new GameManagement();
         Scanner scanner = new Scanner(System.in);
+        Date data = new Date();
+        Player p1 = new Player("rebeca",100, "mapa.json", data, 1);
 
             int option = -1;
             int option2, opt = -1;
@@ -85,8 +89,15 @@ public class Main {
                                             case 2:
                                             case 3:
                                                 gameMan.lerFicheiro("C:\\Users\\Rebeca\\Desktop\\edproject\\src\\main\\resources\\mapa.json", option2);
+                                                if(gameMan.validateMap()){
+                                                    gameMan.gameplay(p1);
 
-                                                //gameMan.getNetwork().printAdjacencyMatrix();
+
+
+                                                } else {
+                                                    System.out.println("Mapa inválido");
+                                                }
+
                                                 break;
                                         }
 

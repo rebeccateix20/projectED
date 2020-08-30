@@ -180,4 +180,12 @@ public class ArrayDirectedNetwork<T> extends ArrayDirectedGraph<T> implements Ne
 
     }
 
+    public T getElementVertice(int index) {
+        T vertice = null;
+        if (index > -1 && index < this.numVertices) {
+            vertice = this.vertices[index];
+        }
+
+        return vertice;
+    }
 }

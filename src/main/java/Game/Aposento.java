@@ -49,6 +49,10 @@ public class Aposento {
         this.fantasma *= dificuldade;
     }
 
+    public void setFantasma(int valorBase, int dificuldade) {
+        this.fantasma = valorBase*dificuldade;
+    }
+
     public void setLigacoes(ArrayUnorderedList<String> ligacoes) {
         this.ligacoes = ligacoes;
     }

@@ -17,7 +17,7 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.Random;
-
+import java.util.Scanner;
 
 
 public class GameManagement {
@@ -75,9 +75,9 @@ public class GameManagement {
                 JSONArray jsonArray_ligacoes = (JSONArray) it.get("ligacoes");
                 for (Object jsonArray_ligacao : jsonArray_ligacoes) {
                     String ligacao = jsonArray_ligacao.toString();
-                    ligacoes_aposento.addToFront(ligacao);
+                    ligacoes_aposento.addToRear(ligacao);
                 }
-                aposentos.addToFront(new Aposento(nome_aposento, fantasma, ligacoes_aposento));
+                aposentos.addToRear(new Aposento(nome_aposento, fantasma, ligacoes_aposento));
             }
             this.mapa = new Mapa(nome, pontos, aposentos);
             this.classificacao_pontos = pontos;
@@ -91,6 +91,15 @@ public class GameManagement {
             System.out.println("Erro ao ler o mapa");
         }
         return false;
+    }
+
+    private void dificuldade(int dificuldade){
+        Iterator<Aposento> iterator = this.mapa.getAposentos().iterator();
+
+        while (iterator.hasNext()) {
+            Aposento ap = iterator.next();
+            ap.setFantasma(dificuldade);
+        }
     }
 
     public void createNetwork() throws ElementNotFoundException {
@@ -122,62 +131,12 @@ public class GameManagement {
         this.mapa.getAposentos().addToFront(entrada);
         this.mapa.getAposentos().addToRear(exterior);
 
-        network.addVertex(entrada);
         for (Aposento aposento : mapa.getAposentos()) {
             network.addVertex(aposento);
         }
-        network.addVertex(exterior);
 
-/*
-        int n_aposentos_sem_fantasma = mapa.getAposentos().size();
-        for (Aposento aposento : mapa.getAposentos()) {
-            if (aposento.getFantasma() > 0)
-                n_aposentos_sem_fantasma--;
-        }
+        this.dificuldade(this.dificuldade);
 
-        Random bonusRandom = new Random();
-        int bonus = bonusRandom.nextInt((3 - 1) + 1) + 1; //para sortear qual o bonus entre 1-3
-        switch(bonus){
-            case 1:
-                Random random2 = new Random();
-                int i2 = random2.nextInt(n_aposentos_sem_fantasma);
-                for (Aposento aposento : mapa.getAposentos()) {
-                    if (i2 == 0) {
-                        aposento.setFantasma(-25);
-                        //System.out.println(aposento.getNome());
-                    }
-                    i2--;
-                }
-                break;
-            case 2:
-                Random random = new Random();
-
-                int i = random.nextInt(n_aposentos_sem_fantasma);
-                int danomax=0;
-                for (Aposento aposento : mapa.getAposentos()) {
-                    if (aposento.getFantasma() > danomax) {
-                        danomax= aposento.getFantasma();
-                    }
-                }
-
-                Random random1 = new Random();
-                int dano= random1.nextInt(danomax);
-                for (Aposento aposento : mapa.getAposentos()) {
-                    if (i == 0) {
-                        aposento.setFantasma(-dano);
-                        //System.out.println(aposento.getNome());
-                    }
-                    i--;
-                }
-                break;
-            case 3:
-                break;
-        }
-*/
-/*
-        for (Aposento obj_aposento : mapa.getAposentos()) {
-            System.out.println(obj_aposento.getNome());
-        }*/
         Iterator<Aposento> iterator = this.mapa.getAposentos().iterator();
 
         while (iterator.hasNext()) {
@@ -240,4 +199,125 @@ public class GameManagement {
         }
     }
 
+    public void gameplay(Player player) throws ElementNotFoundException {
+
+
+
+        Aposento ap = this.searchDivision("entrada");
+
+        while(ap != this.searchDivision("exterior")){
+
+            Iterator<String> test = this.getAposentosWithFantasma();
+            while(test.hasNext()){
+                System.out.println("APOSENTO COM FANTASMA ::::::::::: " + test.next());
+            }
+
+            System.out.println("Vida: " + player.getPontos());
+            System.out.println("Posição: " + ap.getNome());
+            System.out.println("Opcoes: ");
+
+            ArrayUnorderedList<Integer> lista = new ArrayUnorderedList<>();
+            Iterator<String> it = ap.getLigacoesIterator();
+
+            int i = 0;
+
+            while(it.hasNext()){
+                Iterator<Aposento> itr = this.mapa.getAposentos().iterator();
+                i = 0;
+                String ap2 = it.next();
+
+                if(!ap2.equals("entrada")){
+                    while(itr.hasNext()){
+                        Aposento ap4Check = itr.next();
+                        if(ap2.equals(ap4Check.getNome())){
+                            System.out.println(i + " - " + ap2 + " ");
+                            lista.addToRear(i);
+                        }
+                        i++;
+                    }
+                }
+            }
+
+            boolean stopIt = false;
+            int opcao;
+
+            do {
+                System.out.println("Para onde deseja ir: ");
+                Scanner s = new Scanner(System.in);
+                opcao = s.nextInt();
+
+                if (lista.contains(opcao)) {
+                    ap = this.choice(opcao);
+
+                    if (ap.getFantasma() > 0) {
+                        System.out.println("BOO! Apareceu um fantasma!");
+                    }
+
+                    if (player.getPontos() - ap.getFantasma() > 0) {
+                        player.damage(ap.getFantasma());
+                    } else {
+                        player.setPontos(0);
+                        ap = searchDivision("exterior");
+                        System.out.println("GAME OVER!!!");
+                        break;
+                    }
+                    moveFantasmas(ap);
+
+                    stopIt = true;
+                }
+            } while (!stopIt);
+
+        }
+
+    }
+
+    private Aposento choice(int opc) {
+        return this.network.getElementVertice(opc);
+    }
+
+    private void moveFantasmas(Aposento playerAp) throws ElementNotFoundException {
+        boolean found = false;
+        for (Aposento ap: this.mapa.getAposentos()){
+            found = false;
+            if(ap.getFantasma()>0){
+                Iterator<String> it = ap.getLigacoesIterator();
+                while(it.hasNext() && !found){
+                    Aposento ap2 = this.searchDivision(it.next());
+                    if(ap2.getFantasma() == 0 && !ap2.equals(playerAp) && !ap2.equals(this.searchDivision("exterior"))){
+                        ap2.setFantasma(15, this.dificuldade);
+                        ap.setFantasma(0);
+
+                        Iterator<String> it2 = ap2.getLigacoesIterator();
+                        while(it2.hasNext()){
+                            Aposento apUpdate = this.searchDivision(it2.next());
+                            this.network.removeEdge(ap2, apUpdate);
+                            this.network.removeEdge(apUpdate, ap2);
+                            this.network.addEdge(apUpdate,ap2, ap2.getFantasma());
+                            this.network.addEdge(ap2,apUpdate, 0);
+                        }
+
+                        Iterator<String> it3 = ap.getLigacoesIterator();
+                        while(it3.hasNext()){
+                            Aposento apUpdate2 = this.searchDivision(it3.next());
+                            this.network.removeEdge(ap, apUpdate2);
+                            this.network.removeEdge(apUpdate2, ap);
+                            this.network.addEdge(apUpdate2,ap, 0);
+                            this.network.addEdge(ap,apUpdate2, 0);
+                        }
+                        found = true;
+                    }
+                }
+            }
+        }
+    }
+
+    public Iterator<String> getAposentosWithFantasma(){
+        ArrayUnorderedList<String> list = new ArrayUnorderedList<>();
+        for(Aposento ap: this.mapa.getAposentos()){
+            if(ap.getFantasma()>0){
+                list.addToRear(ap.getNome());
+            }
+        }
+        return list.iterator();
+    }
 }
