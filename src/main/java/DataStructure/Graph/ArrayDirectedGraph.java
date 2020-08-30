@@ -236,7 +236,6 @@ public class ArrayDirectedGraph<T> implements GraphADT<T> {
                 resultList.addToRear(x);
 
                 if (x[1] == endIndex) {
-                    System.out.println("ENTROU");
                     found = true;
                 } else {
                     /**

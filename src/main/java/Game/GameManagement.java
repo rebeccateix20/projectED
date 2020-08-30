@@ -147,7 +147,6 @@ public class GameManagement {
                 }
             }
         }
-
     }
 
     private Aposento searchDivision(String aposento) throws ElementNotFoundException {
@@ -181,6 +180,8 @@ public class GameManagement {
             custo += ap.getFantasma();
         }
         if (custo < this.mapa.getPontos()) {
+            System.out.println("Mapa carregado e validado");
+            this.printMap();
             return true;
         } else {
             return false;
@@ -193,6 +194,7 @@ public class GameManagement {
             Aposento ap = iterator.next();
             System.out.print(ap.getNome() + " - ");
         }
+        System.out.print("\n");
     }
 
     public void gameplay(Player player) throws ElementNotFoundException, UnsupportedDataTypeException {
