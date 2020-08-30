@@ -6,7 +6,9 @@
 package DataStructure.Graph;
 
 import DataStructure.Exceptions.EmptyCollectionException;
+
 import java.util.Iterator;
+
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
 import DataStructure.list.UnorderedList.UnorderedListADT;
 import DataStructure.queue.ArrayQueue;
@@ -15,7 +17,6 @@ import DataStructure.queue.QueueADT;
 import DataStructure.stack.LinkedStack;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayNotDirectedGraph<T> implements GraphADT<T> {
@@ -118,12 +119,13 @@ public class ArrayNotDirectedGraph<T> implements GraphADT<T> {
         return index;
     }
 
-    public T getVertex(int i){
+    public T getVertex(int i) {
         if (i >= 0 && i < vertices.length)
             return vertices[i];
         else
             throw new ArrayIndexOutOfBoundsException("Vertex doesn't exists");
     }
+
     protected boolean indexIsValid(int index) {
         return (index > -1 && index < this.numVertices);
     }
@@ -222,7 +224,7 @@ public class ArrayNotDirectedGraph<T> implements GraphADT<T> {
         QueueADT<Integer[]> traversalQueue = new ArrayQueue<Integer[]>();
         UnorderedListADT<Integer[]> resultList = new ArrayUnorderedList<>();
         UnorderedListADT<T> path = new ArrayUnorderedList<>();
-        
+
         if (!indexIsValid(startIndex)) {
             return resultList.iterator();
         }
@@ -258,11 +260,11 @@ public class ArrayNotDirectedGraph<T> implements GraphADT<T> {
                 }
             }
         }
-        
+
         int order = endIndex;
-        while(!resultList.isEmpty()){
+        while (!resultList.isEmpty()) {
             Integer[] elementToOrder = resultList.removeLast();
-            if(elementToOrder[1] == order){
+            if (elementToOrder[1] == order) {
                 path.addToFront(this.vertices[elementToOrder[1]]);
                 order = elementToOrder[0];
             }

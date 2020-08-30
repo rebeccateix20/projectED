@@ -6,7 +6,6 @@
 package DataStructure.Exceptions;
 
 /**
- *
  * @author Rebeca
  */
 public class EmptyCollectionException extends Exception {
@@ -26,6 +25,5 @@ public class EmptyCollectionException extends Exception {
         super(message);
     }
 
-    
-    
+
 }

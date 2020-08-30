@@ -7,6 +7,7 @@ package DataStructure.BinaryTree;
 
 import DataStructure.Exceptions.ElementNotFoundException;
 import DataStructure.Exceptions.EmptyCollectionException;
+
 import java.util.Iterator;
 
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
@@ -14,7 +15,6 @@ import DataStructure.queue.ArrayQueue;
 import DataStructure.queue.QueueADT;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {

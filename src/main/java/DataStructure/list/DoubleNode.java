@@ -6,7 +6,6 @@
 package DataStructure.list;
 
 /**
- *
  * @author Rebeca
  */
 public class DoubleNode<T> {
@@ -47,7 +46,7 @@ public class DoubleNode<T> {
     public void setNext(DoubleNode<T> next) {
         this.next = next;
     }
-    
+
     public DoubleNode<T> getPrevious() {
         return previous;
     }

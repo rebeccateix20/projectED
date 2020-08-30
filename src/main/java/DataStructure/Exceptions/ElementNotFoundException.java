@@ -6,7 +6,6 @@
 package DataStructure.Exceptions;
 
 /**
- *
  * @author Rebeca
  */
 public class ElementNotFoundException extends Exception {

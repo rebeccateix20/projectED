@@ -10,13 +10,13 @@ import DataStructure.Exceptions.NoPathAvailable;
 import DataStructure.Graph.ArrayDirectedGraph;
 import DataStructure.PriorityQueue.ArrayPriorityQueue;
 import DataStructure.PriorityQueue.PriorityQueueNode;
+
 import java.util.Iterator;
 
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
 import DataStructure.list.UnorderedList.UnorderedListADT;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayDirectedNetwork<T> extends ArrayDirectedGraph<T> implements NetworkADT<T> {
@@ -185,7 +185,7 @@ public class ArrayDirectedNetwork<T> extends ArrayDirectedGraph<T> implements Ne
         if (index > -1 && index < this.numVertices) {
             vertice = this.vertices[index];
         }
-
         return vertice;
     }
+
 }

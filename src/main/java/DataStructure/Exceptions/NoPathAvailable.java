@@ -6,7 +6,6 @@
 package DataStructure.Exceptions;
 
 /**
- *
  * @author Rebeca
  */
 public class NoPathAvailable extends Exception {

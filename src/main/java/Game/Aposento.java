@@ -10,7 +10,6 @@ import DataStructure.list.UnorderedList.ArrayUnorderedList;
 import java.util.Iterator;
 
 /**
- *
  * @author Rebeca
  */
 public class Aposento {
@@ -37,7 +36,7 @@ public class Aposento {
         return ligacoes;
     }
 
-    public Iterator<String> getLigacoesIterator(){
+    public Iterator<String> getLigacoesIterator() {
         return this.ligacoes.iterator();
     }
 
@@ -50,13 +49,12 @@ public class Aposento {
     }
 
     public void setFantasma(int valorBase, int dificuldade) {
-        this.fantasma = valorBase*dificuldade;
+        this.fantasma = valorBase * dificuldade;
     }
 
     public void setLigacoes(ArrayUnorderedList<String> ligacoes) {
         this.ligacoes = ligacoes;
     }
-
 
 
 }

@@ -7,12 +7,12 @@ package DataStructure.list;
 
 import DataStructure.Exceptions.ElementNotFoundException;
 import DataStructure.Exceptions.EmptyCollectionException;
+
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Rebeca
  */
 public class LinkedList<T> implements ListADT<T> {
@@ -47,13 +47,13 @@ public class LinkedList<T> implements ListADT<T> {
         T element = this.rear.getElement();
         LinearNode<T> current = this.front;
         LinearNode<T> previous = null;
-        
-        if(this.count==1){
+
+        if (this.count == 1) {
             this.front = this.rear = null;
         } else {
-            while(current!=this.rear){
+            while (current != this.rear) {
                 previous = current;
-                current=current.getNext();
+                current = current.getNext();
             }
             previous.setNext(null);
             this.rear = previous;
@@ -133,7 +133,7 @@ public class LinkedList<T> implements ListADT<T> {
     public int size() {
         return this.count;
     }
-    
+
     @Override
     public String toString() {
         String lista = "";
@@ -153,7 +153,7 @@ public class LinkedList<T> implements ListADT<T> {
     public Iterator<T> iterator() {
         return new LinkedList.BasicIterator();
     }
-    
+
     private class BasicIterator implements Iterator {
 
         private boolean okToRemove;

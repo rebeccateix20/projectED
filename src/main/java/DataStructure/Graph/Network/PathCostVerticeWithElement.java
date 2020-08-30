@@ -6,15 +6,14 @@
 package DataStructure.Graph.Network;
 
 /**
- *
  * @author Rebeca
  */
 public class PathCostVerticeWithElement<T> {
     private T previous;
     private T current;
     private double cost;
-    
-     public PathCostVerticeWithElement(T previous, T current, double cost) {
+
+    public PathCostVerticeWithElement(T previous, T current, double cost) {
         this.previous = previous;
         this.current = current;
         this.cost = cost;
@@ -24,7 +23,7 @@ public class PathCostVerticeWithElement<T> {
         return previous;
     }
 
-    
+
     public T getCurrent() {
         return current;
     }
@@ -38,5 +37,5 @@ public class PathCostVerticeWithElement<T> {
         return "<" + this.previous + "," + this.current + "," + this.cost + ">";
     }
 
-    
+
 }

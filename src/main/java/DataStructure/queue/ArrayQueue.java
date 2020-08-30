@@ -8,7 +8,6 @@ package DataStructure.queue;
 import DataStructure.Exceptions.EmptyCollectionException;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayQueue<T> implements QueueADT<T> {

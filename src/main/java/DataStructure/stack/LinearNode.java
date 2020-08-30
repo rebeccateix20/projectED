@@ -6,7 +6,6 @@
 package DataStructure.stack;
 
 /**
- *
  * @author Rebeca
  */
 public class LinearNode<T> {
@@ -78,6 +77,6 @@ public class LinearNode<T> {
     public String toString() {
         return "" + element + "";
     }
-    
-    
+
+
 }

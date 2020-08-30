@@ -6,10 +6,10 @@
 package DataStructure.Graph;
 
 import DataStructure.Exceptions.EmptyCollectionException;
+
 import java.util.Iterator;
 
 /**
- *
  * @author Rebeca
  */
 public interface GraphADT<T> {
@@ -64,7 +64,7 @@ public interface GraphADT<T> {
      * Returns an iterator that contains the shortest path between the two
      * vertices.
      *
-     * @param startVertex the starting vertex
+     * @param startVertex  the starting vertex
      * @param targetVertex the ending vertex
      * @return an iterator that contains the shortest path between the two
      * vertices
@@ -94,9 +94,8 @@ public interface GraphADT<T> {
 
     /**
      * Returns a string representation of the adjacency matrix.
-     *
      */
     public void printAdjacencyMatrix();
-    
-    
+
+
 }

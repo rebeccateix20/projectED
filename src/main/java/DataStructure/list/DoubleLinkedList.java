@@ -7,12 +7,12 @@ package DataStructure.list;
 
 import DataStructure.Exceptions.ElementNotFoundException;
 import DataStructure.Exceptions.EmptyCollectionException;
+
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Rebeca
  */
 public class DoubleLinkedList<T> implements ListADT<T> {

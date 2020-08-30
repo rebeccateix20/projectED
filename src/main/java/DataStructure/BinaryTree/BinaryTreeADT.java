@@ -7,10 +7,10 @@ package DataStructure.BinaryTree;
 
 import DataStructure.Exceptions.ElementNotFoundException;
 import DataStructure.Exceptions.EmptyCollectionException;
+
 import java.util.Iterator;
 
 /**
- *
  * @author Rebeca
  */
 public interface BinaryTreeADT<T> {

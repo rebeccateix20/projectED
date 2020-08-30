@@ -6,11 +6,11 @@
 package DataStructure.list.OrderedList;
 
 import javax.activation.UnsupportedDataTypeException;
+
 import DataStructure.list.DoubleLinkedList;
 import DataStructure.list.DoubleNode;
 
 /**
- *
  * @author Rebeca
  */
 public class DoubleLinkedOrderedList<T> extends DoubleLinkedList<T> implements OrderedListADT<T> {
@@ -21,7 +21,7 @@ public class DoubleLinkedOrderedList<T> extends DoubleLinkedList<T> implements O
 
     @Override
     public void add(T element) throws UnsupportedDataTypeException {
-        
+
         if (!(element instanceof Comparable)) {
             throw new UnsupportedDataTypeException();
         }
@@ -55,7 +55,7 @@ public class DoubleLinkedOrderedList<T> extends DoubleLinkedList<T> implements O
                 current.setNext(newNode);
                 current.getNext().setPrevious(newNode);
             }
-            
+
         }
         this.count++;
         this.modCount++;

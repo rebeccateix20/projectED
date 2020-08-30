@@ -7,7 +7,6 @@ package DataStructure.Graph.Network;
  */
 
 /**
- *
  * @author Rebeca
  */
 public class PathCostVertice {
@@ -24,7 +23,7 @@ public class PathCostVertice {
         return shortestElement;
     }
 
-  
+
     public double getCost() {
         return cost;
     }

@@ -6,11 +6,11 @@
 package DataStructure.list.OrderedList;
 
 import javax.activation.UnsupportedDataTypeException;
+
 import DataStructure.list.LinearNode;
 import DataStructure.list.LinkedList;
 
 /**
- *
  * @author Rebeca
  */
 public class LinkedOrderedList<T> extends LinkedList<T> implements OrderedListADT<T> {

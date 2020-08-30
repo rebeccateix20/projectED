@@ -6,10 +6,10 @@
 package DataStructure.list.OrderedList;
 
 import javax.activation.UnsupportedDataTypeException;
+
 import DataStructure.list.ArrayList;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayOrderedList<T> extends ArrayList<T> implements OrderedListADT<T> {
@@ -17,17 +17,17 @@ public class ArrayOrderedList<T> extends ArrayList<T> implements OrderedListADT<
     public ArrayOrderedList() {
         super();
     }
-    
+
 
     @Override
-    public void add(T element) throws UnsupportedDataTypeException{
+    public void add(T element) throws UnsupportedDataTypeException {
         if (!(element instanceof Comparable)) {
             throw new UnsupportedDataTypeException();
         }
-        if(this.list.length==size()){
+        if (this.list.length == size()) {
             expandCapacity();
         }
-        int i=0;
+        int i = 0;
         /*
         CompareTo devolve: -1 caso menor
                             1 caso maior
@@ -36,22 +36,22 @@ public class ArrayOrderedList<T> extends ArrayList<T> implements OrderedListADT<
         while (i < this.rear && ((Comparable) element).compareTo(this.list[i]) > 0) {
             i++;
         }
-        
+
         int rearAdd = this.rear;
-        
-        while(rearAdd > i){ //está a fazer um shift para a frente, ou seja, a abrir espaço para o elemento
-            this.list[rearAdd] = this.list[rearAdd-1];
+
+        while (rearAdd > i) { //está a fazer um shift para a frente, ou seja, a abrir espaço para o elemento
+            this.list[rearAdd] = this.list[rearAdd - 1];
             rearAdd--;
         }
-        
+
         this.list[i] = element;
         this.rear++;
-        
+
         this.modCount++;
-        
-        
+
+
     }
-    
+
     private void expandCapacity() {
         T[] expandList = (T[]) (new Object[(this.list.length * 2)]);
 
@@ -61,5 +61,5 @@ public class ArrayOrderedList<T> extends ArrayList<T> implements OrderedListADT<
 
         this.list = expandList;
     }
-    
+
 }

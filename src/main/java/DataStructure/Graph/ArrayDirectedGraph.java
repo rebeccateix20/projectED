@@ -6,7 +6,9 @@
 package DataStructure.Graph;
 
 import DataStructure.Exceptions.EmptyCollectionException;
+
 import java.util.Iterator;
+
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
 import DataStructure.list.UnorderedList.UnorderedListADT;
 import DataStructure.queue.ArrayQueue;
@@ -15,7 +17,6 @@ import DataStructure.queue.QueueADT;
 import DataStructure.stack.LinkedStack;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayDirectedGraph<T> implements GraphADT<T> {

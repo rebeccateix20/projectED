@@ -7,6 +7,7 @@ package DataStructure.BinaryTree;
 
 import DataStructure.Exceptions.ElementNotFoundException;
 import DataStructure.Exceptions.EmptyCollectionException;
+
 import java.util.Iterator;
 
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
@@ -14,7 +15,6 @@ import DataStructure.queue.ArrayQueue;
 import DataStructure.queue.QueueADT;
 
 /**
- *
  * @author Rebeca
  */
 public class LinkedBinaryTree<T> implements BinaryTreeADT<T> {
@@ -84,10 +84,10 @@ public class LinkedBinaryTree<T> implements BinaryTreeADT<T> {
      * this binary tree.
      *
      * @param targetElement the element being sought in this tree
-     * @param next the element to begin searching from
+     * @param next          the element to begin searching from
      */
     private BinaryTreeNode<T> findAgain(T targetElement,
-            BinaryTreeNode<T> next) {
+                                        BinaryTreeNode<T> next) {
         if (next == null) {
             return null;
         }

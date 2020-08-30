@@ -10,7 +10,6 @@ import DataStructure.list.LinearNode;
 import DataStructure.list.LinkedList;
 
 /**
- *
  * @author Rebeca
  */
 public class LinkedUnorderedList<T> extends LinkedList<T> implements UnorderedListADT<T> {

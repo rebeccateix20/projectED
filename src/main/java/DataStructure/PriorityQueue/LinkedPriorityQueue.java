@@ -9,17 +9,18 @@ import DataStructure.Exceptions.EmptyCollectionException;
 import DataStructure.Heap.LinkedHeap;
 
 /**
- *
  * @author Rebeca
  */
 public class LinkedPriorityQueue<T> extends LinkedHeap<PriorityQueueNode<T>> {
-    
+
     public LinkedPriorityQueue() {
         super();
     }
+
     /**
      * Adiciona um elemento
-     * @param object elemento a ser adicionado
+     *
+     * @param object   elemento a ser adicionado
      * @param priority prioridade desse elemento
      */
     public void addElement(T object, int priority) {

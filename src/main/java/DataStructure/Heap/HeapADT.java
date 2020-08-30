@@ -9,7 +9,6 @@ import DataStructure.BinaryTree.BinaryTreeADT;
 import DataStructure.Exceptions.EmptyCollectionException;
 
 /**
- *
  * @author Rebeca
  */
 public interface HeapADT<T> extends BinaryTreeADT<T> {

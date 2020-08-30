@@ -9,7 +9,6 @@ import DataStructure.BinaryTree.LinkedBinaryTree;
 import DataStructure.Exceptions.EmptyCollectionException;
 
 /**
- *
  * @author Rebeca
  */
 public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T> {
@@ -185,7 +184,7 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T> {
 
     @Override
     public T findMin() throws EmptyCollectionException {
-        if(isEmpty()){
+        if (isEmpty()) {
             throw new EmptyCollectionException();
         }
         return this.root.getElement();

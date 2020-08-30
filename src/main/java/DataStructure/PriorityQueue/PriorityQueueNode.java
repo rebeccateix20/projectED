@@ -6,7 +6,6 @@
 package DataStructure.PriorityQueue;
 
 /**
- *
  * @author Rebeca
  */
 public class PriorityQueueNode<T> implements Comparable<PriorityQueueNode> {
@@ -19,7 +18,7 @@ public class PriorityQueueNode<T> implements Comparable<PriorityQueueNode> {
     /**
      * Creates a new PriorityQueueNode with the specified data.
      *
-     * @param obj the element of the new priority DataStructure.queue node
+     * @param obj  the element of the new priority DataStructure.queue node
      * @param prio the integer priority of the new DataStructure.queue node
      */
     public PriorityQueueNode(T obj, double prio) {
@@ -58,7 +57,6 @@ public class PriorityQueueNode<T> implements Comparable<PriorityQueueNode> {
 
     /**
      * Returns a string representation for this node.
-     *
      */
     public String toString() {
         String temp = (element.toString() + priority + order);

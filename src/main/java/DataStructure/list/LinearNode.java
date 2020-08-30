@@ -6,7 +6,6 @@
 package DataStructure.list;
 
 /**
- *
  * @author Rebeca
  */
 public class LinearNode<T> {

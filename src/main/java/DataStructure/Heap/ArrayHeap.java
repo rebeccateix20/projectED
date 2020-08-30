@@ -9,7 +9,6 @@ import DataStructure.BinaryTree.ArrayBinaryTree;
 import DataStructure.Exceptions.EmptyCollectionException;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayHeap<T> extends ArrayBinaryTree<T> implements HeapADT<T> {
@@ -29,7 +28,7 @@ public class ArrayHeap<T> extends ArrayBinaryTree<T> implements HeapADT<T> {
             heapifyAdd();
         }
     }
-    
+
     private void expandCapacity() {
         T[] newHeap = (T[]) (new Object[tree.length * 2]);
         for (int i = 0; i < this.tree.length; i++) {
@@ -106,12 +105,11 @@ public class ArrayHeap<T> extends ArrayBinaryTree<T> implements HeapADT<T> {
 
     @Override
     public T findMin() throws EmptyCollectionException {
-        if(isEmpty()){
+        if (isEmpty()) {
             throw new EmptyCollectionException();
         }
         return tree[0];
     }
-    
-   
+
 
 }

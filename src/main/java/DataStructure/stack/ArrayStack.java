@@ -8,10 +8,9 @@ package DataStructure.stack;
 import DataStructure.Exceptions.EmptyCollectionException;
 
 /**
- *
  * @author Rebeca
  */
-public class ArrayStack<T> implements StackADT<T>  {
+public class ArrayStack<T> implements StackADT<T> {
 
     /**
      * constant to represent the default capacity of the array
@@ -53,7 +52,7 @@ public class ArrayStack<T> implements StackADT<T>  {
      */
     @Override
     public void push(T element) {
-        
+
         if (size() == stack.length) {
             expandCapacity();
         }
@@ -88,7 +87,7 @@ public class ArrayStack<T> implements StackADT<T>  {
      * @throws EmptyCollectionException if a peek is attempted on empty DataStructure.stack
      */
     @Override
-    public T peek() throws EmptyCollectionException{
+    public T peek() throws EmptyCollectionException {
         if (isEmpty()) {
             throw new EmptyCollectionException("Stack");
         }
@@ -106,15 +105,15 @@ public class ArrayStack<T> implements StackADT<T>  {
     }
 
     private void expandCapacity() {
-        T[] newStack = (T[]) (new Object[this.stack.length*2]);
-        for(int i=0; i<this.stack.length; i++){
+        T[] newStack = (T[]) (new Object[this.stack.length * 2]);
+        for (int i = 0; i < this.stack.length; i++) {
             newStack[i] = this.stack[i];
         }
         this.stack = newStack;
     }
 
     public void printStack() {
-        for(int i=0; i<this.top; i++){
+        for (int i = 0; i < this.top; i++) {
             System.out.println(this.stack[i]);
         }
     }

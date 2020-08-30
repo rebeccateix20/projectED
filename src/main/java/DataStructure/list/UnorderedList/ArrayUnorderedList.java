@@ -9,7 +9,6 @@ import DataStructure.list.ArrayList;
 import DataStructure.Exceptions.ElementNotFoundException;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedListADT<T> {
@@ -31,7 +30,7 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
             rearAdd--;
         }
         this.list[0] = element;
-        
+
         this.modCount++;
         this.rear++;
     }

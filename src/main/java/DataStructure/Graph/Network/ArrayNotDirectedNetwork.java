@@ -10,12 +10,13 @@ import DataStructure.Exceptions.NoPathAvailable;
 import DataStructure.Graph.ArrayNotDirectedGraph;
 import DataStructure.PriorityQueue.ArrayPriorityQueue;
 import DataStructure.PriorityQueue.PriorityQueueNode;
+
 import java.util.Iterator;
+
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
 import DataStructure.list.UnorderedList.UnorderedListADT;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayNotDirectedNetwork<T> extends ArrayNotDirectedGraph<T> implements NetworkADT<T> {

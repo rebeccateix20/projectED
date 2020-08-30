@@ -10,7 +10,6 @@ import DataStructure.list.DoubleNode;
 import DataStructure.Exceptions.ElementNotFoundException;
 
 /**
- *
  * @author Rebeca
  */
 public class DoubleLinkedUnorderedList<T> extends DoubleLinkedList<T> implements UnorderedListADT<T> {

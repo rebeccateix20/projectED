@@ -8,7 +8,6 @@ package DataStructure.stack;
 import DataStructure.Exceptions.EmptyCollectionException;
 
 /**
- *
  * @author Rebeca
  */
 public class LinkedStack<T> implements StackADT<T> {
@@ -59,20 +58,20 @@ public class LinkedStack<T> implements StackADT<T> {
 
     @Override
     public boolean isEmpty() {
-        return this.count==0;
+        return this.count == 0;
     }
 
     @Override
     public int size() {
         return this.count;
     }
-    
+
     /*
     Print da DataStructure.stack
     */
-    public void printLinkedStack(){
+    public void printLinkedStack() {
         LinearNode<T> tempNode = this.top;
-        while(tempNode != null){
+        while (tempNode != null) {
             System.out.println(tempNode.toString());
             tempNode = tempNode.getNext();
         }

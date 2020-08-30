@@ -6,7 +6,6 @@
 package DataStructure.BinaryTree;
 
 /**
- *
  * @author Rebeca
  */
 public class BinaryTreeNode<T> {
@@ -48,9 +47,7 @@ public class BinaryTreeNode<T> {
     public void setElement(T element) {
         this.element = element;
     }
-    
-    
-    
+
 
     /**
      * Returns the number of non-null children of this node. This method may be

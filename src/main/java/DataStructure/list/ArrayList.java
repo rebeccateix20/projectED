@@ -6,12 +6,12 @@
 package DataStructure.list;
 
 import DataStructure.Exceptions.EmptyCollectionException;
+
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayList<T> implements ListADT<T> {
@@ -134,7 +134,7 @@ public class ArrayList<T> implements ListADT<T> {
     }
 
     private class BasicIterator implements Iterator {
-        
+
         private boolean okToRemove;
         private int expectedModCount;
         private int current;
@@ -147,7 +147,7 @@ public class ArrayList<T> implements ListADT<T> {
 
         @Override
         public boolean hasNext() {
-            return this.current!=size();
+            return this.current != size();
         }
 
         @Override
@@ -159,10 +159,10 @@ public class ArrayList<T> implements ListADT<T> {
             if (!hasNext()) {
                 throw new java.util.NoSuchElementException();
             }
-            
+
             this.current++;
             this.okToRemove = true;
-            return (T) list[this.current-1];
+            return (T) list[this.current - 1];
         }
 
         @Override
@@ -174,12 +174,12 @@ public class ArrayList<T> implements ListADT<T> {
             if (!this.okToRemove) {
                 throw new IllegalStateException();
             }
-            
+
             try {
                 this.current--;
                 ArrayList.this.remove(ArrayList.this.list[this.current]);
                 this.okToRemove = false;
-                
+
             } catch (EmptyCollectionException ex) {
                 Logger.getLogger(ArrayList.class.getName()).log(Level.SEVERE, null, ex);
             }

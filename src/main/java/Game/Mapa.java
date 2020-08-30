@@ -12,7 +12,6 @@ import DataStructure.list.UnorderedList.UnorderedListADT;
 import java.util.Iterator;
 
 /**
- *
  * @author Rebeca
  */
 public class Mapa {
@@ -51,5 +50,4 @@ public class Mapa {
     }
 
 
-    
 }

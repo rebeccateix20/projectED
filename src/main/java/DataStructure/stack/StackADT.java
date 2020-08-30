@@ -9,7 +9,6 @@ import DataStructure.Exceptions.EmptyCollectionException;
 
 
 /**
- *
  * @author Rebeca
  */
 public interface StackADT<T> {

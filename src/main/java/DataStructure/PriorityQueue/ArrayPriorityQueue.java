@@ -9,7 +9,6 @@ import DataStructure.Exceptions.EmptyCollectionException;
 import DataStructure.Heap.ArrayHeap;
 
 /**
- *
  * @author Rebeca
  */
 public class ArrayPriorityQueue<T> extends ArrayHeap<PriorityQueueNode<T>> {
@@ -20,7 +19,8 @@ public class ArrayPriorityQueue<T> extends ArrayHeap<PriorityQueueNode<T>> {
 
     /**
      * Adiciona um elemento
-     * @param object elemento a ser adicionado
+     *
+     * @param object   elemento a ser adicionado
      * @param priority prioridade desse elemento
      */
     public void addElement(T object, double priority) {

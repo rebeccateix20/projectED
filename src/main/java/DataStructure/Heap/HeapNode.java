@@ -8,7 +8,6 @@ package DataStructure.Heap;
 import DataStructure.BinaryTree.BinaryTreeNode;
 
 /**
- *
  * @author Rebeca
  */
 public class HeapNode<T> extends BinaryTreeNode<T> {
@@ -27,7 +26,6 @@ public class HeapNode<T> extends BinaryTreeNode<T> {
     public void setParent(HeapNode<T> parent) {
         this.parent = parent;
     }
-    
-    
-    
+
+
 }
