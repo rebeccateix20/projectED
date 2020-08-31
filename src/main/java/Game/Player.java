@@ -23,6 +23,7 @@ public class Player implements Comparable<Player> {
     private Instant startTime;
     private float estimateTime;
 
+
     public Player(String nome, int pontos, String mapa, Date data, int dificuldade) {
         this.nome = nome;
         this.pontos = pontos;
@@ -78,6 +79,10 @@ public class Player implements Comparable<Player> {
 
     public void damage(int pontos) {
         this.pontos -= pontos;
+    }
+
+    public void bonus(int bonus) {
+        this.pontos += bonus;
     }
 
     public void setMapa(String mapa) {

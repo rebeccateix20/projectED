@@ -67,11 +67,8 @@ public class Main {
 
                                             gameMan.lerFicheiro("resources/mapa.json", option2);
 
-                                            if (gameMan.validateMap()) {
-                                                gameMan.simulation();
-                                            } else {
-                                                System.out.println("Mapa inválido");
-                                            }
+                                            gameMan.simulation();
+
 
                                             break;
                                     }
@@ -88,13 +85,8 @@ public class Main {
                                         case 2:
                                         case 3:
                                             gameMan.lerFicheiro("resources/mapa.json", option2);
-                                            if (gameMan.validateMap()) {
                                                 gameMan.gameplay(p1);
 
-
-                                            } else {
-                                                System.out.println("Mapa inválido");
-                                            }
 
                                             break;
                                     }
@@ -107,7 +99,7 @@ public class Main {
                 case 2:
                     gameMan.loadResults();
                     Iterator<Player> results = gameMan.getResultados().iterator();
-                    while(results.hasNext()){
+                    while (results.hasNext()) {
                         Player player = results.next();
                         System.out.println(player.toString());
 

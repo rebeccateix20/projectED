@@ -37,6 +37,10 @@ public class Mapa {
         return aposentos;
     }
 
+    public Iterator<Aposento> getAposentosIterator(){
+        return this.aposentos.iterator();
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -47,6 +51,36 @@ public class Mapa {
 
     public void setAposentos(ArrayUnorderedList<Aposento> aposentos) {
         this.aposentos = aposentos;
+    }
+
+    public int getNumberAposentosSemFantasma() {
+        int count = 0;
+        for (Aposento ap : this.aposentos) {
+            if (ap.getFantasma() > 0 && !ap.getNome().equals("entrada") && !ap.getNome().equals("exterior")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getMaxDamageFantasma(){
+        int max = 0;
+        for (Aposento ap : this.aposentos) {
+            if (ap.getFantasma() > max) {
+                max = ap.getFantasma();
+            }
+        }
+        return max;
+    }
+
+    public Iterator<Aposento> getAposentosSemFantasmaIterator(){
+        ArrayUnorderedList<Aposento> lista = new ArrayUnorderedList<>();
+        for(Aposento ap: this.aposentos){
+            if(ap.getFantasma() == 0 && !ap.getNome().equals("entrada") && !ap.getNome().equals("exterior")){
+                lista.addToRear(ap);
+            }
+        }
+        return lista.iterator();
     }
 
 

@@ -8,6 +8,7 @@ import DataStructure.Graph.Network.PathCostVerticeWithElement;
 import DataStructure.list.OrderedList.ArrayOrderedList;
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
 import DataStructure.list.UnorderedList.UnorderedListADT;
+import ExceptionsGame.InvalidMapException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -27,6 +28,7 @@ public class GameManagement {
     private ArrayDirectedNetwork<Aposento> network;
     private ArrayOrderedList<Player> resultados;
     private int dificuldade;
+    private boolean teletransporte;
 
     public Mapa getMapa() {
         return mapa;
@@ -40,6 +42,13 @@ public class GameManagement {
         return resultados;
     }
 
+    public boolean isTeletransporte() {
+        return teletransporte;
+    }
+
+    public void setTeletransporte(boolean teletransporte) {
+        this.teletransporte = teletransporte;
+    }
 
     public GameManagement(Mapa mapa, ArrayDirectedNetwork<Aposento> network, ArrayOrderedList<Player> resultados) {
         this.mapa = mapa;
@@ -78,8 +87,12 @@ public class GameManagement {
             }
             this.mapa = new Mapa(nome, pontos, aposentos);
             this.dificuldade = dificuldade;
+            setTeletransporte(false);
 
-            createNetwork();
+
+            this.createNetwork();
+            this.validateMap();
+            this.addBonus();
             return true;
         } catch (FileNotFoundException e) {
             System.out.println("ficheiro não encontrado");
@@ -101,6 +114,7 @@ public class GameManagement {
     public void createNetwork() throws ElementNotFoundException {
         network = new ArrayDirectedNetwork<>();
 
+        //Cria os vertices e adiciona à lista dos aposentos do mapa
         ArrayUnorderedList<String> ligacoesEntrada = new ArrayUnorderedList<>();
         ArrayUnorderedList<String> ligacoesSaida = new ArrayUnorderedList<>();
         boolean found = false;
@@ -133,6 +147,7 @@ public class GameManagement {
 
         this.dificuldade(this.dificuldade);
 
+        //Para cada aposento vai criar as arestas
         Iterator<Aposento> iterator = this.mapa.getAposentos().iterator();
 
         while (iterator.hasNext()) {
@@ -146,6 +161,38 @@ public class GameManagement {
                     this.network.addEdge(this.searchDivision(ap.getNome()), this.searchDivision(lig), this.searchDivision(lig).getFantasma());
                 }
             }
+        }
+    }
+
+    public void addBonus() {
+        Random random = new Random();
+        int option = random.nextInt((3 - 1) + 1) + 1;
+        Random random2 = new Random();
+        int i2 = random2.nextInt(this.mapa.getNumberAposentosSemFantasma());
+        Iterator<Aposento> aposentoSemFantasma = this.mapa.getAposentosSemFantasmaIterator();
+        while (aposentoSemFantasma.hasNext()) {
+            Aposento aposento = aposentoSemFantasma.next();
+            if (i2 == 0) {
+                switch (option) {
+                    case 1: //Acresce 25 pontos de vida ao jogador
+                        System.out.println("APOSENTO COM ACRESCIMO :::::::::::::::: " + aposento.getNome());
+                        aposento.setFantasmaBonus(-25);
+                        break;
+
+                    case 2: //Escudo
+                        System.out.println("APOSENTO COM ESCUDO :::::::::::::::: " + aposento.getNome());
+                        Random r = new Random();
+                        int dano = r.nextInt((this.mapa.getMaxDamageFantasma() - 1) + 1) + 1;
+                        aposento.setFantasmaBonus(-dano);
+                        break;
+
+                    case 3: //Teletransporte
+                        System.out.println("CALHOU TELETRANSPORTE :::::::::::::::: " + aposento.getNome());
+                        setTeletransporte(true);
+                        break;
+                }
+            }
+            i2--;
         }
     }
 
@@ -171,20 +218,24 @@ public class GameManagement {
         return aposento1;
     }
 
-    public boolean validateMap() throws NoPathAvailable, EmptyCollectionException, ElementNotFoundException {
+    public boolean validateMap() throws NoPathAvailable, EmptyCollectionException, ElementNotFoundException, InvalidMapException {
         double custo = 0.0;
+        ArrayUnorderedList<String> lista = new ArrayUnorderedList<>();
         Iterator<PathCostVerticeWithElement<Aposento>> iterator = this.network.iteratorShortestPathWeight(this.searchDivision("entrada"), this.searchDivision("exterior"));
         while (iterator.hasNext()) {
             PathCostVerticeWithElement<Aposento> p = iterator.next();
             Aposento ap = p.getCurrent();
+            lista.addToRear(ap.getNome());
+            System.out.println(" - " + ap.getNome());
             custo += ap.getFantasma();
         }
-        if (custo < this.mapa.getPontos()) {
+
+        if (custo < this.mapa.getPontos() && lista.contains("entrada") && lista.contains("exterior")) {
             System.out.println("Mapa carregado e validado");
             this.printMap();
             return true;
         } else {
-            return false;
+            throw new InvalidMapException("Mapa Inválido");
         }
     }
 
@@ -198,6 +249,7 @@ public class GameManagement {
     }
 
     public void gameplay(Player player) throws ElementNotFoundException, UnsupportedDataTypeException {
+        player.setPontos(this.mapa.getPontos());
 
         Aposento ap = this.searchDivision("entrada");
 
@@ -242,8 +294,22 @@ public class GameManagement {
                 if (lista.contains(opcao)) {
                     ap = this.choice(opcao);
 
-                    if (ap.getFantasma() > 0) {
+                    if (ap.getFantasma() > 0 && !this.teletransporte) {
                         System.out.println("BOO! Apareceu um fantasma!");
+                    } else if (ap.getFantasma() > 0 && this.teletransporte) {
+                        System.out.println("ENTROU NO TELETRANSPORTE");
+                        Iterator<Aposento> apSemFantasmas = this.mapa.getAposentosSemFantasmaIterator();
+                        Random random2 = new Random();
+                        int i2 = random2.nextInt(this.mapa.getNumberAposentosSemFantasma());
+                        while (apSemFantasmas.hasNext()) {
+                            Aposento apSemGhost = apSemFantasmas.next();
+                            if (i2 == 0) {
+                                System.out.println("APOSENTO QUE VAI SER TELETRANSPORTADO :::::::::::::: " + apSemGhost.getNome());
+                                ap = apSemGhost;
+                                setTeletransporte(false);
+                            }
+                            i2--;
+                        }
                     }
 
                     if (player.getPontos() - ap.getFantasma() > 0) {
@@ -372,9 +438,9 @@ public class GameManagement {
         }
     }
 
-    public void addResults(String nome_jogador,int pontos, String nome_mapa, int dificuladade, float time) throws UnsupportedDataTypeException {
+    public void addResults(String nome_jogador, int pontos, String nome_mapa, int dificuladade, float time) throws UnsupportedDataTypeException {
         loadResults();
-        this.resultados.add(new Player(nome_jogador,pontos, nome_mapa, new Date(), dificuladade, time));
+        this.resultados.add(new Player(nome_jogador, pontos, nome_mapa, new Date(), dificuladade, time));
         saveResults();
     }
 

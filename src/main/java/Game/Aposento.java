@@ -24,6 +24,7 @@ public class Aposento {
         this.ligacoes = ligacoes;
     }
 
+
     public String getNome() {
         return nome;
     }
@@ -46,6 +47,10 @@ public class Aposento {
 
     public void setFantasma(int dificuldade) {
         this.fantasma *= dificuldade;
+    }
+
+    public void setFantasmaBonus(int bonus) {
+        this.fantasma += bonus;
     }
 
     public void setFantasma(int valorBase, int dificuldade) {
