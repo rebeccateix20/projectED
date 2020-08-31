@@ -15,7 +15,6 @@ import org.json.simple.parser.JSONParser;
 
 import javax.activation.UnsupportedDataTypeException;
 import java.io.*;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -29,6 +28,8 @@ public class GameManagement {
     private ArrayOrderedList<Player> resultados;
     private int dificuldade;
     private boolean teletransporte;
+    private Aposento escudo;
+    private Aposento acrescimo;
 
     public Mapa getMapa() {
         return mapa;
@@ -40,10 +41,6 @@ public class GameManagement {
 
     public ArrayOrderedList<Player> getResultados() {
         return resultados;
-    }
-
-    public boolean isTeletransporte() {
-        return teletransporte;
     }
 
     public void setTeletransporte(boolean teletransporte) {
@@ -158,7 +155,7 @@ public class GameManagement {
                 String lig = iterator1.next();
 
                 if (!lig.equals("entrada")) {
-                    this.network.addEdge(this.searchDivision(ap.getNome()), this.searchDivision(lig), this.searchDivision(lig).getFantasma());
+                    this.network.addEdge(this.searchAposento(ap.getNome()), this.searchAposento(lig), this.searchAposento(lig).getFantasma());
                 }
             }
         }
@@ -177,6 +174,7 @@ public class GameManagement {
                     case 1: //Acresce 25 pontos de vida ao jogador
                         System.out.println("APOSENTO COM ACRESCIMO :::::::::::::::: " + aposento.getNome());
                         aposento.setFantasmaBonus(-25);
+                        this.acrescimo = aposento;
                         break;
 
                     case 2: //Escudo
@@ -184,6 +182,7 @@ public class GameManagement {
                         Random r = new Random();
                         int dano = r.nextInt((this.mapa.getMaxDamageFantasma() - 1) + 1) + 1;
                         aposento.setFantasmaBonus(-dano);
+                        this.escudo = aposento;
                         break;
 
                     case 3: //Teletransporte
@@ -196,7 +195,7 @@ public class GameManagement {
         }
     }
 
-    private Aposento searchDivision(String aposento) throws ElementNotFoundException {
+    private Aposento searchAposento(String aposento) throws ElementNotFoundException {
         UnorderedListADT aposentos = this.mapa.getAposentos();
         Aposento aposento1 = null;
         boolean found = false;
@@ -221,7 +220,7 @@ public class GameManagement {
     public boolean validateMap() throws NoPathAvailable, EmptyCollectionException, ElementNotFoundException, InvalidMapException {
         double custo = 0.0;
         ArrayUnorderedList<String> lista = new ArrayUnorderedList<>();
-        Iterator<PathCostVerticeWithElement<Aposento>> iterator = this.network.iteratorShortestPathWeight(this.searchDivision("entrada"), this.searchDivision("exterior"));
+        Iterator<PathCostVerticeWithElement<Aposento>> iterator = this.network.iteratorShortestPathWeight(this.searchAposento("entrada"), this.searchAposento("exterior"));
         while (iterator.hasNext()) {
             PathCostVerticeWithElement<Aposento> p = iterator.next();
             Aposento ap = p.getCurrent();
@@ -240,7 +239,7 @@ public class GameManagement {
     }
 
     public void simulation() throws EmptyCollectionException, ElementNotFoundException {
-        Iterator<Aposento> iterator = this.network.iteratorShortestPath(this.searchDivision("entrada"), this.searchDivision("exterior"));
+        Iterator<Aposento> iterator = this.network.iteratorShortestPath(this.searchAposento("entrada"), this.searchAposento("exterior"));
         while (iterator.hasNext()) {
             Aposento ap = iterator.next();
             System.out.print(ap.getNome() + " - ");
@@ -251,10 +250,10 @@ public class GameManagement {
     public void gameplay(Player player) throws ElementNotFoundException, UnsupportedDataTypeException {
         player.setPontos(this.mapa.getPontos());
 
-        Aposento ap = this.searchDivision("entrada");
+        Aposento ap = this.searchAposento("entrada");
 
         player.setStartTime();
-        while (ap != this.searchDivision("exterior")) {
+        while (ap != this.searchAposento("exterior")) {
 
             System.out.println("Vida: " + player.getPontos());
             System.out.println("Posição: " + ap.getNome());
@@ -294,7 +293,7 @@ public class GameManagement {
                 if (lista.contains(opcao)) {
                     ap = this.choice(opcao);
 
-                    if (ap.getFantasma() > 0 && !this.teletransporte) {
+                    if (ap.getFantasma() > 0 && !this.teletransporte && this.acrescimo == null && this.escudo == null) {
                         System.out.println("BOO! Apareceu um fantasma!");
                     } else if (ap.getFantasma() > 0 && this.teletransporte) {
                         System.out.println("ENTROU NO TELETRANSPORTE");
@@ -310,13 +309,23 @@ public class GameManagement {
                             }
                             i2--;
                         }
+                    } else if (ap.getFantasma() > 0 && this.escudo != null) {
+                        System.out.println("BOO! Apareceu um fantasma!");
+                        Aposento apTemp = this.escudo;
+                        apTemp.setFantasma(0);
+                        this.escudo = null;
+                    } else if (ap.getFantasma() > 0 && this.acrescimo != null) {
+                        System.out.println("BOO! Apareceu um fantasma!");
+                        Aposento apTemp = this.acrescimo;
+                        apTemp.setFantasma(0);
+                        this.acrescimo = null;
                     }
 
                     if (player.getPontos() - ap.getFantasma() > 0) {
                         player.damage(ap.getFantasma());
                     } else {
                         player.setPontos(0);
-                        ap = searchDivision("exterior");
+                        ap = searchAposento("exterior");
                         System.out.println("GAME OVER!!!");
                         break;
                     }
@@ -348,7 +357,7 @@ public class GameManagement {
             Iterator<String> lig = apo.getLigacoesIterator();
 
             while (lig.hasNext()) {
-                Aposento apCheck = this.searchDivision(lig.next());
+                Aposento apCheck = this.searchAposento(lig.next());
                 if (apCheck.getFantasma() > 0) {
                     System.out.print(" -> " + apCheck.getNome() + "(FANTASMA! PERDES " + apCheck.getFantasma() + " PONTOS)");
                 } else {
@@ -370,14 +379,14 @@ public class GameManagement {
             if (ap.getFantasma() > 0) {
                 Iterator<String> it = ap.getLigacoesIterator();
                 while (it.hasNext() && !found) {
-                    Aposento ap2 = this.searchDivision(it.next());
-                    if (ap2.getFantasma() == 0 && !ap2.equals(playerAp) && !ap2.equals(this.searchDivision("exterior"))) {
+                    Aposento ap2 = this.searchAposento(it.next());
+                    if (ap2.getFantasma() == 0 && !ap2.equals(playerAp) && !ap2.equals(this.searchAposento("exterior"))) {
                         ap2.setFantasma(15, this.dificuldade);
                         ap.setFantasma(0);
 
                         Iterator<String> it2 = ap2.getLigacoesIterator();
                         while (it2.hasNext()) {
-                            Aposento apUpdate = this.searchDivision(it2.next());
+                            Aposento apUpdate = this.searchAposento(it2.next());
                             this.network.removeEdge(ap2, apUpdate);
                             this.network.removeEdge(apUpdate, ap2);
                             this.network.addEdge(apUpdate, ap2, ap2.getFantasma());
@@ -386,7 +395,7 @@ public class GameManagement {
 
                         Iterator<String> it3 = ap.getLigacoesIterator();
                         while (it3.hasNext()) {
-                            Aposento apUpdate2 = this.searchDivision(it3.next());
+                            Aposento apUpdate2 = this.searchAposento(it3.next());
                             this.network.removeEdge(ap, apUpdate2);
                             this.network.removeEdge(apUpdate2, ap);
                             this.network.addEdge(apUpdate2, ap, 0);
@@ -443,6 +452,7 @@ public class GameManagement {
         this.resultados.add(new Player(nome_jogador, pontos, nome_mapa, new Date(), dificuladade, time));
         saveResults();
     }
+
 
 
 }

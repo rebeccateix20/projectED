@@ -3,11 +3,9 @@ package Game;
 import DataStructure.Exceptions.ElementNotFoundException;
 import DataStructure.Exceptions.EmptyCollectionException;
 import DataStructure.Exceptions.NoPathAvailable;
-import DataStructure.Graph.Network.PathCostVerticeWithElement;
 
 import javax.activation.UnsupportedDataTypeException;
 import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -15,24 +13,24 @@ public class Main {
 
     private static void menuDif() {
         System.out.println("MENU DIF\n");
-        System.out.println("1. BASICO\n");
-        System.out.println("2. MEDIO\n");
-        System.out.println("3. DIFICIL\n");
-        System.out.println("0. SAIR\n");
+        System.out.println("1. BASICO");
+        System.out.println("2. MEDIO");
+        System.out.println("3. DIFICIL");
+        System.out.println("0. SAIR");
     }
 
     private static void menu() {
         System.out.println("MENU \n");
-        System.out.println("1. COMEÇAR\n");
-        System.out.println("2. CLASSIFICAÇOES)\n");
-        System.out.println("0. SAIR\n");
+        System.out.println("1. COMEÇAR");
+        System.out.println("2. CLASSIFICAÇOES");
+        System.out.println("0. SAIR");
     }
 
     private static void menuSimOrMan() {
         System.out.println("MENU \n");
-        System.out.println("1. Simulação\n");
-        System.out.println("2. Manual\n");
-        System.out.println("0. SAIR\n");
+        System.out.println("1. Simulação");
+        System.out.println("2. Manual");
+        System.out.println("0. SAIR");
     }
 
 
@@ -64,12 +62,8 @@ public class Main {
                                         case 1:
                                         case 2:
                                         case 3:
-
                                             gameMan.lerFicheiro("resources/mapa.json", option2);
-
                                             gameMan.simulation();
-
-
                                             break;
                                     }
 
@@ -85,12 +79,9 @@ public class Main {
                                         case 2:
                                         case 3:
                                             gameMan.lerFicheiro("resources/mapa.json", option2);
-                                                gameMan.gameplay(p1);
-
-
+                                            gameMan.gameplay(p1);
                                             break;
                                     }
-
                                 } while (option2 != 0 && (option2 < 1 || option2 > 2));
                                 break;
                         }
@@ -102,9 +93,7 @@ public class Main {
                     while (results.hasNext()) {
                         Player player = results.next();
                         System.out.println(player.toString());
-
                     }
-
                     break;
             }
 
