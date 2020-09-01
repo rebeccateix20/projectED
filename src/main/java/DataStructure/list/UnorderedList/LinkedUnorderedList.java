@@ -26,9 +26,9 @@ public class LinkedUnorderedList<T> extends LinkedList<T> implements UnorderedLi
         } else {
             newNode.setNext(this.front);
             this.front = newNode;
-            this.count++;
-            this.modCount++;
         }
+        this.count++;
+        this.modCount++;
 
     }
 

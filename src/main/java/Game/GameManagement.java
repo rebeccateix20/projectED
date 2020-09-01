@@ -5,9 +5,12 @@ import DataStructure.Exceptions.EmptyCollectionException;
 import DataStructure.Exceptions.NoPathAvailable;
 import DataStructure.Graph.Network.ArrayDirectedNetwork;
 import DataStructure.Graph.Network.PathCostVerticeWithElement;
+import DataStructure.list.LinkedList;
 import DataStructure.list.OrderedList.ArrayOrderedList;
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
+import DataStructure.list.UnorderedList.LinkedUnorderedList;
 import DataStructure.list.UnorderedList.UnorderedListADT;
+import DataStructure.stack.ArrayStack;
 import ExceptionsGame.InvalidMapException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -30,6 +33,7 @@ public class GameManagement {
     private boolean teletransporte;
     private Aposento escudo;
     private Aposento acrescimo;
+    private ArrayStack<Jogada> jogadas;
 
     public Mapa getMapa() {
         return mapa;
@@ -85,8 +89,6 @@ public class GameManagement {
             this.mapa = new Mapa(nome, pontos, aposentos);
             this.dificuldade = dificuldade;
             setTeletransporte(false);
-
-
             this.createNetwork();
             this.validateMap();
             this.addBonus();
@@ -187,7 +189,7 @@ public class GameManagement {
 
                     case 3: //Teletransporte
                         System.out.println("CALHOU TELETRANSPORTE :::::::::::::::: " + aposento.getNome());
-                        setTeletransporte(true);
+                        aposento.setTeletransporte(true);
                         break;
                 }
             }
@@ -225,7 +227,6 @@ public class GameManagement {
             PathCostVerticeWithElement<Aposento> p = iterator.next();
             Aposento ap = p.getCurrent();
             lista.addToRear(ap.getNome());
-            System.out.println(" - " + ap.getNome());
             custo += ap.getFantasma();
         }
 
@@ -247,9 +248,10 @@ public class GameManagement {
         System.out.print("\n");
     }
 
-    public void gameplay(Player player) throws ElementNotFoundException, UnsupportedDataTypeException {
+    public void gameplay(Player player) throws ElementNotFoundException, UnsupportedDataTypeException, EmptyCollectionException {
+        this.jogadas = new ArrayStack<>();
+        int nUndos = 0;
         player.setPontos(this.mapa.getPontos());
-
         Aposento ap = this.searchAposento("entrada");
 
         player.setStartTime();
@@ -282,9 +284,16 @@ public class GameManagement {
             }
             System.out.println("0 - See Mapa ");
 
+            if (this.dificuldade == 1 && nUndos <3) {
+                System.out.println("-1 - Undo Jogada ");
+            } else if(this.dificuldade == 2 && nUndos<2){
+                System.out.println("-1 - Undo Jogada ");
+            } else if(this.dificuldade == 3 && nUndos<1){
+                System.out.println("-1 - Undo Jogada ");
+            }
+
             boolean stopIt = false;
             int opcao;
-
             do {
                 System.out.println("Para onde deseja ir: ");
                 Scanner s = new Scanner(System.in);
@@ -293,8 +302,14 @@ public class GameManagement {
                 if (lista.contains(opcao)) {
                     ap = this.choice(opcao);
 
+                    if (ap.isTeletransporte()) {
+                        this.teletransporte = true;
+                        ap.setTeletransporte(false);
+                    }
+
                     if (ap.getFantasma() > 0 && !this.teletransporte && this.acrescimo == null && this.escudo == null) {
                         System.out.println("BOO! Apareceu um fantasma!");
+
                     } else if (ap.getFantasma() > 0 && this.teletransporte) {
                         System.out.println("ENTROU NO TELETRANSPORTE");
                         Iterator<Aposento> apSemFantasmas = this.mapa.getAposentosSemFantasmaIterator();
@@ -304,18 +319,20 @@ public class GameManagement {
                             Aposento apSemGhost = apSemFantasmas.next();
                             if (i2 == 0) {
                                 System.out.println("APOSENTO QUE VAI SER TELETRANSPORTADO :::::::::::::: " + apSemGhost.getNome());
+                                this.teletransporte = false;
                                 ap = apSemGhost;
-                                setTeletransporte(false);
                             }
                             i2--;
                         }
-                    } else if (ap.getFantasma() > 0 && this.escudo != null) {
-                        System.out.println("BOO! Apareceu um fantasma!");
+                    } else if ( ap.getFantasma() < 0 && this.escudo != null && ap.getNome().equals(this.escudo.getNome())) {
+                        System.out.println("ENTROU ESCUDO");
+                        player.damage(ap.getFantasma());
                         Aposento apTemp = this.escudo;
                         apTemp.setFantasma(0);
                         this.escudo = null;
-                    } else if (ap.getFantasma() > 0 && this.acrescimo != null) {
-                        System.out.println("BOO! Apareceu um fantasma!");
+                    } else if ( ap.getFantasma() < 0 && this.acrescimo != null && ap.getNome().equals(this.acrescimo.getNome())) {
+                        System.out.println("ENTROU ACRESCIMO ");
+                        player.damage(ap.getFantasma());
                         Aposento apTemp = this.acrescimo;
                         apTemp.setFantasma(0);
                         this.acrescimo = null;
@@ -329,11 +346,23 @@ public class GameManagement {
                         System.out.println("GAME OVER!!!");
                         break;
                     }
-                    moveFantasmas(ap);
 
+                    Mapa mapa3 = new Mapa(this.mapa.getPontos(), this.mapa.getAposentos());
+                    this.jogadas.push(new Jogada(mapa3.getAposentos(), ap, player.getPontos()));
+
+                    moveFantasmas(ap);
                     stopIt = true;
                 } else if (opcao == 0) {
                     this.printMap();
+                } else if (opcao == -1) {
+                    this.jogadas.pop();
+                    Jogada jog = this.jogadas.peek();
+                    Mapa mapaSec = new Mapa(this.mapa.getNome(), this.mapa.getPontos(), jog.getAposentos());
+                    ap = jog.getCurrentAposento();
+                    player.setPontos(jog.getPoints());
+                    this.mapa = mapaSec;
+                    nUndos++;
+                    stopIt = true;
                 }
             } while (!stopIt);
 
@@ -452,7 +481,6 @@ public class GameManagement {
         this.resultados.add(new Player(nome_jogador, pontos, nome_mapa, new Date(), dificuladade, time));
         saveResults();
     }
-
 
 
 }

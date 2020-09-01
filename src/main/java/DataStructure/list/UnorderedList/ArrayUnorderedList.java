@@ -8,6 +8,8 @@ package DataStructure.list.UnorderedList;
 import DataStructure.list.ArrayList;
 import DataStructure.Exceptions.ElementNotFoundException;
 
+import java.util.Arrays;
+
 /**
  * @author Rebeca
  */

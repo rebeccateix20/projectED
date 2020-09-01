@@ -19,10 +19,28 @@ public class Mapa {
     private int pontos;
     private ArrayUnorderedList<Aposento> aposentos;
 
+    @Override
+    public String toString() {
+        String s = "Mapa{" +
+                "nome='" + nome + '\'' +
+                ", pontos=" + pontos +
+                ", aposentos=";
+        for(Aposento ap: this.aposentos){
+            s += ap.getNome() + " " + " " + ap.getFantasma() + " ->" ;
+        }
+        return s;
+    }
+
     public Mapa(String nome, int pontos, ArrayUnorderedList<Aposento> aposentos) {
         this.nome = nome;
         this.pontos = pontos;
         this.aposentos = aposentos;
+    }
+
+    public Mapa(int pontos, ArrayUnorderedList<Aposento> aposentos){
+        this.pontos = pontos;
+        this.aposentos = aposentos;
+
     }
 
     public String getNome() {

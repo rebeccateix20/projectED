@@ -17,6 +17,7 @@ public class Aposento {
     private String nome;
     private int fantasma;
     private ArrayUnorderedList<String> ligacoes;
+    private boolean teletransporte;
 
     public Aposento(String nome, int fantasma, ArrayUnorderedList<String> ligacoes) {
         this.nome = nome;
@@ -24,6 +25,13 @@ public class Aposento {
         this.ligacoes = ligacoes;
     }
 
+    public void setTeletransporte(boolean teletransporte) {
+        this.teletransporte = teletransporte;
+    }
+
+    public boolean isTeletransporte() {
+        return teletransporte;
+    }
 
     public String getNome() {
         return nome;
