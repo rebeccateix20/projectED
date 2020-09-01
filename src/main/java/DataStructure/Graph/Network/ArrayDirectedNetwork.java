@@ -174,6 +174,8 @@ public class ArrayDirectedNetwork<T> extends ArrayDirectedGraph<T> implements Ne
 
             PathCostVerticeWithElement first = new PathCostVerticeWithElement(null, this.vertices[start[1]], 0.0);
             path.addToFront(first);
+
+
             return path.iterator();
         }
         throw new NoPathAvailable();

@@ -84,8 +84,18 @@ public class GameManagement {
                     String ligacao = jsonArray_ligacao.toString();
                     ligacoes_aposento.addToRear(ligacao);
                 }
-                aposentos.addToRear(new Aposento(nome_aposento, fantasma, ligacoes_aposento));
+                if (dificuldade == 1) {
+                    Integer[] fantasmaTemp = {fantasma};
+                    aposentos.addToRear(new Aposento(nome_aposento, fantasmaTemp, ligacoes_aposento, fantasma));
+                } else if (dificuldade == 2) {
+                    Integer[] fantasmaTemp = {fantasma, fantasma};
+                    aposentos.addToRear(new Aposento(nome_aposento, fantasmaTemp, ligacoes_aposento, fantasma*2));
+                } else if (dificuldade == 3) {
+                    Integer[] fantasmaTemp = {fantasma, fantasma, fantasma};
+                    aposentos.addToRear(new Aposento(nome_aposento, fantasmaTemp, ligacoes_aposento, fantasma*3));
+                }
             }
+
             this.mapa = new Mapa(nome, pontos, aposentos);
             this.dificuldade = dificuldade;
             setTeletransporte(false);
@@ -96,18 +106,10 @@ public class GameManagement {
         } catch (FileNotFoundException e) {
             System.out.println("ficheiro não encontrado");
         } catch (Exception e) {
+            System.out.println(e.toString());
             System.out.println("Erro ao ler o mapa");
         }
         return false;
-    }
-
-    private void dificuldade(int dificuldade) {
-        Iterator<Aposento> iterator = this.mapa.getAposentos().iterator();
-
-        while (iterator.hasNext()) {
-            Aposento ap = iterator.next();
-            ap.setFantasma(dificuldade);
-        }
     }
 
     public void createNetwork() throws ElementNotFoundException {
@@ -134,17 +136,15 @@ public class GameManagement {
             }
         }
 
-        Aposento entrada = new Aposento("entrada", 0, ligacoesEntrada);
+        Aposento entrada = new Aposento("entrada", new Integer[]{0}, ligacoesEntrada, 0);
 
-        Aposento exterior = new Aposento("exterior", 0, ligacoesSaida);
+        Aposento exterior = new Aposento("exterior", new Integer[]{0}, ligacoesSaida, 0);
         this.mapa.getAposentos().addToFront(entrada);
         this.mapa.getAposentos().addToRear(exterior);
 
         for (Aposento aposento : mapa.getAposentos()) {
             network.addVertex(aposento);
         }
-
-        this.dificuldade(this.dificuldade);
 
         //Para cada aposento vai criar as arestas
         Iterator<Aposento> iterator = this.mapa.getAposentos().iterator();
@@ -157,25 +157,27 @@ public class GameManagement {
                 String lig = iterator1.next();
 
                 if (!lig.equals("entrada")) {
-                    this.network.addEdge(this.searchAposento(ap.getNome()), this.searchAposento(lig), this.searchAposento(lig).getFantasma());
+                    this.network.addEdge(this.searchAposento(ap.getNome()), this.searchAposento(lig), ap.getCostFantasmas());
                 }
             }
         }
     }
 
     public void addBonus() {
+        System.out.println("ENTROU AQUI");
         Random random = new Random();
         int option = random.nextInt((3 - 1) + 1) + 1;
         Random random2 = new Random();
         int i2 = random2.nextInt(this.mapa.getNumberAposentosSemFantasma());
         Iterator<Aposento> aposentoSemFantasma = this.mapa.getAposentosSemFantasmaIterator();
+        System.out.println("I2 :::::::::::::::::::::: " + i2);
         while (aposentoSemFantasma.hasNext()) {
             Aposento aposento = aposentoSemFantasma.next();
             if (i2 == 0) {
                 switch (option) {
                     case 1: //Acresce 25 pontos de vida ao jogador
                         System.out.println("APOSENTO COM ACRESCIMO :::::::::::::::: " + aposento.getNome());
-                        aposento.setFantasmaBonus(-25);
+                        aposento.setCostTotal(-25);
                         this.acrescimo = aposento;
                         break;
 
@@ -183,7 +185,7 @@ public class GameManagement {
                         System.out.println("APOSENTO COM ESCUDO :::::::::::::::: " + aposento.getNome());
                         Random r = new Random();
                         int dano = r.nextInt((this.mapa.getMaxDamageFantasma() - 1) + 1) + 1;
-                        aposento.setFantasmaBonus(-dano);
+                        aposento.setCostTotal(-dano);
                         this.escudo = aposento;
                         break;
 
@@ -227,7 +229,10 @@ public class GameManagement {
             PathCostVerticeWithElement<Aposento> p = iterator.next();
             Aposento ap = p.getCurrent();
             lista.addToRear(ap.getNome());
-            custo += ap.getFantasma();
+            Integer[] fantasmas = ap.getFantasmas();
+            for (int i = 0; i < fantasmas.length; i++) {
+                custo += fantasmas[i];
+            }
         }
 
         if (custo < this.mapa.getPontos() && lista.contains("entrada") && lista.contains("exterior")) {
@@ -284,11 +289,11 @@ public class GameManagement {
             }
             System.out.println("0 - See Mapa ");
 
-            if (this.dificuldade == 1 && nUndos <3) {
+            if (this.dificuldade == 1 && nUndos < 3) {
                 System.out.println("-1 - Undo Jogada ");
-            } else if(this.dificuldade == 2 && nUndos<2){
+            } else if (this.dificuldade == 2 && nUndos < 2) {
                 System.out.println("-1 - Undo Jogada ");
-            } else if(this.dificuldade == 3 && nUndos<1){
+            } else if (this.dificuldade == 3 && nUndos < 1) {
                 System.out.println("-1 - Undo Jogada ");
             }
 
@@ -307,10 +312,10 @@ public class GameManagement {
                         ap.setTeletransporte(false);
                     }
 
-                    if (ap.getFantasma() > 0 && !this.teletransporte && this.acrescimo == null && this.escudo == null) {
+                    if (ap.getFantasma(0) > 0 && !this.teletransporte && this.acrescimo == null && this.escudo == null) {
                         System.out.println("BOO! Apareceu um fantasma!");
 
-                    } else if (ap.getFantasma() > 0 && this.teletransporte) {
+                    } else if (ap.getFantasma(0) > 0 && this.teletransporte) {
                         System.out.println("ENTROU NO TELETRANSPORTE");
                         Iterator<Aposento> apSemFantasmas = this.mapa.getAposentosSemFantasmaIterator();
                         Random random2 = new Random();
@@ -324,22 +329,22 @@ public class GameManagement {
                             }
                             i2--;
                         }
-                    } else if ( ap.getFantasma() < 0 && this.escudo != null && ap.getNome().equals(this.escudo.getNome())) {
+                    } else if (ap.getCostTotal() < 0 && this.escudo != null && ap.getNome().equals(this.escudo.getNome())) {
                         System.out.println("ENTROU ESCUDO");
-                        player.damage(ap.getFantasma());
+                        player.damage(ap.getCostTotal());
                         Aposento apTemp = this.escudo;
-                        apTemp.setFantasma(0);
+                        apTemp.setCostTotal(0);
                         this.escudo = null;
-                    } else if ( ap.getFantasma() < 0 && this.acrescimo != null && ap.getNome().equals(this.acrescimo.getNome())) {
+                    } else if (ap.getCostTotal() < 0 && this.acrescimo != null && ap.getNome().equals(this.acrescimo.getNome())) {
                         System.out.println("ENTROU ACRESCIMO ");
-                        player.damage(ap.getFantasma());
+                        player.damage(ap.getCostTotal());
                         Aposento apTemp = this.acrescimo;
-                        apTemp.setFantasma(0);
+                        apTemp.setCostTotal(0);
                         this.acrescimo = null;
                     }
 
-                    if (player.getPontos() - ap.getFantasma() > 0) {
-                        player.damage(ap.getFantasma());
+                    if (player.getPontos() - ap.getCostTotal() > 0) {
+                        player.damage(ap.getCostTotal());
                     } else {
                         player.setPontos(0);
                         ap = searchAposento("exterior");
@@ -387,8 +392,8 @@ public class GameManagement {
 
             while (lig.hasNext()) {
                 Aposento apCheck = this.searchAposento(lig.next());
-                if (apCheck.getFantasma() > 0) {
-                    System.out.print(" -> " + apCheck.getNome() + "(FANTASMA! PERDES " + apCheck.getFantasma() + " PONTOS)");
+                if (apCheck.getCostFantasmas() > 0) {
+                    System.out.print(" -> " + apCheck.getNome() + "(FANTASMA! PERDES " + apCheck.getCostFantasmas() + " PONTOS)");
                 } else {
                     System.out.print(" -> " + apCheck.getNome());
                 }
@@ -402,23 +407,39 @@ public class GameManagement {
     }
 
     private void moveFantasmas(Aposento playerAp) throws ElementNotFoundException {
+
         boolean found = false;
         for (Aposento ap : this.mapa.getAposentos()) {
             found = false;
-            if (ap.getFantasma() > 0) {
+            if (ap.getCostFantasmas() > 0) {
                 Iterator<String> it = ap.getLigacoesIterator();
                 while (it.hasNext() && !found) {
                     Aposento ap2 = this.searchAposento(it.next());
-                    if (ap2.getFantasma() == 0 && !ap2.equals(playerAp) && !ap2.equals(this.searchAposento("exterior"))) {
-                        ap2.setFantasma(15, this.dificuldade);
-                        ap.setFantasma(0);
+                    //Encontrado aposento sem fantasma
+                    if (ap2.getCostFantasmas() == 0 && !ap2.equals(playerAp) && !ap2.equals(this.searchAposento("exterior"))) {
+                        boolean found2 = false;
+                        int j = 0;
+
+                        //Esta a atribuir o valor do fantasma do ap1 ao ap2
+                        while(!found2 && j<ap.getFantasmas().length){
+                            if(ap.getFantasma(j)!= 0){
+                                ap2.setCostTotal(ap.getFantasma(j));
+                                ap2.setFantasma(0, ap.getFantasma(j));
+                                found2 = true;
+                            }
+                        }
+
+                        for(int i=0; i<ap.getFantasmas().length; i++){
+                            ap.setFantasma(i, 0);
+                            ap.setCostTotal(0);
+                        }
 
                         Iterator<String> it2 = ap2.getLigacoesIterator();
                         while (it2.hasNext()) {
                             Aposento apUpdate = this.searchAposento(it2.next());
                             this.network.removeEdge(ap2, apUpdate);
                             this.network.removeEdge(apUpdate, ap2);
-                            this.network.addEdge(apUpdate, ap2, ap2.getFantasma());
+                            this.network.addEdge(apUpdate, ap2, ap2.getFantasma(0));
                             this.network.addEdge(ap2, apUpdate, 0);
                         }
 

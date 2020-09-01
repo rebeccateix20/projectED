@@ -15,14 +15,30 @@ import java.util.Iterator;
 public class Aposento {
 
     private String nome;
-    private int fantasma;
+    private Integer[] fantasmas;
+    private int costTotal;
     private ArrayUnorderedList<String> ligacoes;
     private boolean teletransporte;
 
-    public Aposento(String nome, int fantasma, ArrayUnorderedList<String> ligacoes) {
+    public Aposento(String nome, Integer[] fantasmas, ArrayUnorderedList<String> ligacoes, int costTotal) {
         this.nome = nome;
-        this.fantasma = fantasma;
+        this.fantasmas = fantasmas;
         this.ligacoes = ligacoes;
+        this.costTotal = costTotal;
+    }
+
+    public Aposento(String nome, Integer[] fantasmas, ArrayUnorderedList<String> ligacoes) {
+        this.nome = nome;
+        this.fantasmas = fantasmas;
+        this.ligacoes = ligacoes;
+    }
+
+    public int getCostTotal() {
+        return costTotal;
+    }
+
+    public void setCostTotal(int costTotal) {
+        this.costTotal = costTotal;
     }
 
     public void setTeletransporte(boolean teletransporte) {
@@ -37,8 +53,12 @@ public class Aposento {
         return nome;
     }
 
-    public int getFantasma() {
-        return fantasma;
+    public Integer[] getFantasmas() {
+        return fantasmas;
+    }
+
+    public int getFantasma(int index){
+        return this.fantasmas[index];
     }
 
     public ArrayUnorderedList<String> getLigacoes() {
@@ -53,21 +73,28 @@ public class Aposento {
         this.nome = nome;
     }
 
-    public void setFantasma(int dificuldade) {
-        this.fantasma *= dificuldade;
+    public void setFantasma(int index, int value) {
+        this.fantasmas[index] = value;
     }
 
-    public void setFantasmaBonus(int bonus) {
-        this.fantasma += bonus;
+    public void setFantasmaBonus(int index, int bonus) {
+        this.fantasmas[index] += bonus;
     }
 
-    public void setFantasma(int valorBase, int dificuldade) {
-        this.fantasma = valorBase * dificuldade;
+    public void setFantasma(int index, int valorBase, int dificuldade) {
+        this.fantasmas[index] = valorBase * dificuldade;
     }
 
     public void setLigacoes(ArrayUnorderedList<String> ligacoes) {
         this.ligacoes = ligacoes;
     }
 
+    public int getCostFantasmas(){
+        int cost = 0;
+        for(int i=0; i<fantasmas.length ;i++){
+            cost += fantasmas[i];
+        }
+        return cost;
+    }
 
 }

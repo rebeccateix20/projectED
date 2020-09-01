@@ -8,6 +8,7 @@ package Game;
 import DataStructure.Exceptions.ElementNotFoundException;
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
 import DataStructure.list.UnorderedList.UnorderedListADT;
+import ExceptionsGame.CoexistsGhostsException;
 
 import java.util.Iterator;
 
@@ -19,17 +20,18 @@ public class Mapa {
     private int pontos;
     private ArrayUnorderedList<Aposento> aposentos;
 
+    /*
     @Override
     public String toString() {
         String s = "Mapa{" +
                 "nome='" + nome + '\'' +
                 ", pontos=" + pontos +
                 ", aposentos=";
-        for(Aposento ap: this.aposentos){
-            s += ap.getNome() + " " + " " + ap.getFantasma() + " ->" ;
+        for (Aposento ap : this.aposentos) {
+            s += ap.getNome() + " " + " " + ap.getFantasma() + " ->";
         }
         return s;
-    }
+    }*/
 
     public Mapa(String nome, int pontos, ArrayUnorderedList<Aposento> aposentos) {
         this.nome = nome;
@@ -37,7 +39,7 @@ public class Mapa {
         this.aposentos = aposentos;
     }
 
-    public Mapa(int pontos, ArrayUnorderedList<Aposento> aposentos){
+    public Mapa(int pontos, ArrayUnorderedList<Aposento> aposentos) {
         this.pontos = pontos;
         this.aposentos = aposentos;
 
@@ -55,7 +57,7 @@ public class Mapa {
         return aposentos;
     }
 
-    public Iterator<Aposento> getAposentosIterator(){
+    public Iterator<Aposento> getAposentosIterator() {
         return this.aposentos.iterator();
     }
 
@@ -73,32 +75,45 @@ public class Mapa {
 
     public int getNumberAposentosSemFantasma() {
         int count = 0;
-        for (Aposento ap : this.aposentos) {
-            if (ap.getFantasma() > 0 && !ap.getNome().equals("entrada") && !ap.getNome().equals("exterior")) {
+        for(Aposento ap : this.aposentos){
+            if(ap.getCostTotal() <= 0){
                 count++;
             }
         }
         return count;
     }
 
-    public int getMaxDamageFantasma(){
+    public int getMaxDamageFantasma() {
         int max = 0;
         for (Aposento ap : this.aposentos) {
-            if (ap.getFantasma() > max) {
-                max = ap.getFantasma();
+            for (int i = 0; i < ap.getFantasmas().length; i++) {
+                if (ap.getFantasma(i) > max) {
+                    max = ap.getFantasma(i);
+                }
             }
         }
         return max;
     }
 
-    public Iterator<Aposento> getAposentosSemFantasmaIterator(){
+    public Iterator<Aposento> getAposentosSemFantasmaIterator() {
         ArrayUnorderedList<Aposento> lista = new ArrayUnorderedList<>();
-        for(Aposento ap: this.aposentos){
-            if(ap.getFantasma() == 0 && !ap.getNome().equals("entrada") && !ap.getNome().equals("exterior")){
+        int custo;
+        for (Aposento ap : this.aposentos) {
+            custo = 0;
+            for (int i = 0; i < ap.getFantasmas().length; i++) {
+                custo += ap.getFantasma(i);
+            }
+
+            if (custo == 0 && !ap.getNome().equals("entrada") && !ap.getNome().equals("exterior")) {
                 lista.addToRear(ap);
             }
+
         }
         return lista.iterator();
+    }
+
+    public int getNAposentos(){
+        return this.aposentos.size();
     }
 
 

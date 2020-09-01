@@ -17,7 +17,7 @@ public class Jogada {
         Iterator<Aposento> aps = aposentos.iterator();
         while(aps.hasNext()){
             Aposento ap = aps.next();
-            this.aposentos.addToRear(new Aposento(ap.getNome(),ap.getFantasma(),ap.getLigacoes()));
+            this.aposentos.addToRear(new Aposento(ap.getNome(),ap.getFantasmas(),ap.getLigacoes(), ap.getCostFantasmas()));
         }
         this.currentAposento = currentAposento;
         this.points = points;
@@ -42,7 +42,7 @@ public class Jogada {
         Iterator<Aposento> aps = aposentos.iterator();
         while(aps.hasNext()){
             Aposento ap = aps.next();
-            s+= ap.getNome() + " - " + ap.getFantasma();
+            s+= ap.getNome() + " - " + ap.getCostFantasmas();
         }
         s+=" }";
         return s;
