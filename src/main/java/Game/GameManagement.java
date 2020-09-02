@@ -35,14 +35,6 @@ public class GameManagement {
     private Aposento acrescimo;
     private ArrayStack<Jogada> jogadas;
 
-    public Mapa getMapa() {
-        return mapa;
-    }
-
-    public ArrayDirectedNetwork<Aposento> getNetwork() {
-        return network;
-    }
-
     public ArrayOrderedList<Player> getResultados() {
         return resultados;
     }
@@ -232,6 +224,8 @@ public class GameManagement {
             }
         }
 
+        //TODO: Verificar se o nº de fantasmas é menor que o numero de aposentos
+
         if (custo < this.mapa.getPontos() && lista.contains("entrada") && lista.contains("exterior")) {
             System.out.println("Mapa carregado e validado");
             this.printMap();
@@ -253,6 +247,15 @@ public class GameManagement {
     public void gameplay(Player player) throws ElementNotFoundException, UnsupportedDataTypeException, EmptyCollectionException {
         this.jogadas = new ArrayStack<>();
         int nUndos = 0;
+
+        if(this.dificuldade == 1){
+            nUndos = 3;
+        } else if(this.dificuldade == 2){
+            nUndos = 2;
+        } else if(this.dificuldade == 3){
+            nUndos = 1;
+        }
+
         player.setPontos(this.mapa.getPontos());
         Aposento ap = this.searchAposento("entrada");
 
@@ -286,11 +289,7 @@ public class GameManagement {
             }
             System.out.println("0 - See Mapa ");
 
-            if (this.dificuldade == 1 && nUndos < 3) {
-                System.out.println("-1 - Undo Jogada ");
-            } else if (this.dificuldade == 2 && nUndos < 2) {
-                System.out.println("-1 - Undo Jogada ");
-            } else if (this.dificuldade == 3 && nUndos < 1) {
+            if (nUndos !=0) {
                 System.out.println("-1 - Undo Jogada ");
             }
 
@@ -351,20 +350,25 @@ public class GameManagement {
 
                     Mapa mapa3 = new Mapa(this.mapa.getPontos(), this.mapa.getAposentos());
                     this.jogadas.push(new Jogada(mapa3.getAposentos(), ap, player.getPontos()));
-
                     moveFantasmas(ap);
                     stopIt = true;
                 } else if (opcao == 0) {
                     this.printMap();
-                } else if (opcao == -1) {
-                    this.jogadas.pop();
-                    Jogada jog = this.jogadas.peek();
-                    Mapa mapaSec = new Mapa(this.mapa.getNome(), this.mapa.getPontos(), jog.getAposentos());
-                    ap = jog.getCurrentAposento();
-                    player.setPontos(jog.getPoints());
-                    this.mapa = mapaSec;
-                    nUndos++;
-                    stopIt = true;
+                } else if (opcao == -1 && nUndos!=0) {
+
+                    try{
+                        this.jogadas.pop();
+                        Jogada jog = this.jogadas.peek();
+                        Mapa mapaSec = new Mapa(this.mapa.getNome(), this.mapa.getPontos(), jog.getAposentos());
+                        ap = jog.getCurrentAposento();
+                        player.setPontos(jog.getPoints());
+                        this.mapa = mapaSec;
+                        nUndos--;
+                        stopIt = true;
+                    } catch(ArrayIndexOutOfBoundsException e){
+                        System.out.println("Não pode fazer undo");
+                    }
+
                 }
             } while (!stopIt);
 
