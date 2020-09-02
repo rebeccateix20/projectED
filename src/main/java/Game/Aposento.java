@@ -38,7 +38,7 @@ public class Aposento {
     }
 
     public void setCostTotal(int costTotal) {
-        this.costTotal = costTotal;
+        this.costTotal += costTotal;
     }
 
     public void setTeletransporte(boolean teletransporte) {
@@ -57,7 +57,7 @@ public class Aposento {
         return fantasmas;
     }
 
-    public int getFantasma(int index){
+    public int getFantasma(int index) {
         return this.fantasmas[index];
     }
 
@@ -67,6 +67,14 @@ public class Aposento {
 
     public Iterator<String> getLigacoesIterator() {
         return this.ligacoes.iterator();
+    }
+
+    public int getNumberLigacoes() {
+        int count = 0;
+        for (String s : this.ligacoes) {
+            count++;
+        }
+        return count;
     }
 
     public void setNome(String nome) {
@@ -89,12 +97,19 @@ public class Aposento {
         this.ligacoes = ligacoes;
     }
 
-    public int getCostFantasmas(){
+    public int getCostFantasmas() {
         int cost = 0;
-        for(int i=0; i<fantasmas.length ;i++){
+        for (int i = 0; i < fantasmas.length; i++) {
             cost += fantasmas[i];
         }
         return cost;
+    }
+
+    public void shiftFantasmas() {
+        for (int i = 0; i < this.fantasmas.length-1; i++) {
+            this.fantasmas[i] = this.fantasmas[i+1];
+        }
+        this.fantasmas[this.fantasmas.length-1] = 0;
     }
 
 }
