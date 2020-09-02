@@ -112,4 +112,14 @@ public class Aposento {
         this.fantasmas[this.fantasmas.length-1] = 0;
     }
 
+    public int getNFantasmas(){
+        int count = 0;
+        for(int i=0; i<this.fantasmas.length; i++){
+            if(this.fantasmas[i] > 0){
+                count++;
+            }
+        }
+        return count;
+    }
+
 }

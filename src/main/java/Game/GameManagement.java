@@ -212,6 +212,7 @@ public class GameManagement {
 
     public boolean validateMap() throws NoPathAvailable, EmptyCollectionException, ElementNotFoundException, InvalidMapException {
         double custo = 0.0;
+        int nFantasmas = 0;
         ArrayUnorderedList<String> lista = new ArrayUnorderedList<>();
         Iterator<PathCostVerticeWithElement<Aposento>> iterator = this.network.iteratorShortestPathWeight(this.searchAposento("entrada"), this.searchAposento("exterior"));
         while (iterator.hasNext()) {
@@ -222,11 +223,9 @@ public class GameManagement {
             for (int i = 0; i < fantasmas.length; i++) {
                 custo += fantasmas[i];
             }
+            nFantasmas += ap.getNFantasmas();
         }
-
-        //TODO: Verificar se o nº de fantasmas é menor que o numero de aposentos
-
-        if (custo < this.mapa.getPontos() && lista.contains("entrada") && lista.contains("exterior")) {
+        if (custo < this.mapa.getPontos() && lista.contains("entrada") && lista.contains("exterior") && nFantasmas < this.mapa.getNAposentos()) {
             System.out.println("Mapa carregado e validado");
             this.printMap();
             return true;
@@ -249,9 +248,9 @@ public class GameManagement {
         int nUndos = 0;
 
         if(this.dificuldade == 1){
-            nUndos = 3;
+            nUndos = 5;
         } else if(this.dificuldade == 2){
-            nUndos = 2;
+            nUndos = 3;
         } else if(this.dificuldade == 3){
             nUndos = 1;
         }
