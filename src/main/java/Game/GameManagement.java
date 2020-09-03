@@ -15,6 +15,7 @@ import ExceptionsGame.InvalidMapException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.activation.UnsupportedDataTypeException;
 import java.io.*;
@@ -52,9 +53,10 @@ public class GameManagement {
     public GameManagement() {
     }
 
-    public boolean lerFicheiro(String ficheiro, int dificuldade) {
-        JSONParser parser = new JSONParser();
-        try (Reader reader = new FileReader(ficheiro)) {
+    public boolean lerFicheiro(String ficheiro, int dificuldade) throws InvalidMapException, NoPathAvailable, ElementNotFoundException, EmptyCollectionException, IOException, ParseException {
+        if (ficheiro != "" && dificuldade > 0 && dificuldade < 4) {
+            JSONParser parser = new JSONParser();
+            Reader reader = new FileReader(ficheiro);
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
 
             String nome = jsonObject.get("nome").toString();
@@ -95,13 +97,10 @@ public class GameManagement {
             this.validateMap();
             this.addBonus();
             return true;
-        } catch (FileNotFoundException e) {
-            System.out.println("ficheiro não encontrado");
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            System.out.println("Erro ao ler o mapa");
+        } else {
+            throw new InvalidMapException("Mapa invalido");
         }
-        return false;
+
     }
 
     public void createNetwork() throws ElementNotFoundException {
@@ -210,7 +209,7 @@ public class GameManagement {
         return aposento1;
     }
 
-    public boolean validateMap() throws NoPathAvailable, EmptyCollectionException, ElementNotFoundException, InvalidMapException {
+    private boolean validateMap() throws NoPathAvailable, EmptyCollectionException, ElementNotFoundException, InvalidMapException {
         double custo = 0.0;
         int nFantasmas = 0;
         ArrayUnorderedList<String> lista = new ArrayUnorderedList<>();
@@ -247,11 +246,11 @@ public class GameManagement {
         this.jogadas = new ArrayStack<>();
         int nUndos = 0;
 
-        if(this.dificuldade == 1){
+        if (this.dificuldade == 1) {
             nUndos = 5;
-        } else if(this.dificuldade == 2){
+        } else if (this.dificuldade == 2) {
             nUndos = 3;
-        } else if(this.dificuldade == 3){
+        } else if (this.dificuldade == 3) {
             nUndos = 1;
         }
 
@@ -288,7 +287,7 @@ public class GameManagement {
             }
             System.out.println("0 - See Mapa ");
 
-            if (nUndos !=0) {
+            if (nUndos != 0) {
                 System.out.println("-1 - Undo Jogada ");
             }
 
@@ -353,9 +352,9 @@ public class GameManagement {
                     stopIt = true;
                 } else if (opcao == 0) {
                     this.printMap();
-                } else if (opcao == -1 && nUndos!=0) {
+                } else if (opcao == -1 && nUndos != 0) {
 
-                    try{
+                    try {
                         this.jogadas.pop();
                         Jogada jog = this.jogadas.peek();
                         Mapa mapaSec = new Mapa(this.mapa.getNome(), this.mapa.getPontos(), jog.getAposentos());
@@ -364,7 +363,7 @@ public class GameManagement {
                         this.mapa = mapaSec;
                         nUndos--;
                         stopIt = true;
-                    } catch(ArrayIndexOutOfBoundsException e){
+                    } catch (ArrayIndexOutOfBoundsException e) {
                         System.out.println("Não pode fazer undo");
                     }
 
@@ -453,7 +452,7 @@ public class GameManagement {
                         j++;
                     }
                     //shift do fantasma para a posição 0
-                    if(ap.getCostFantasmas() != 0 && ap.getFantasma(0)==0){
+                    if (ap.getCostFantasmas() != 0 && ap.getFantasma(0) == 0) {
                         ap.shiftFantasmas();
                     }
                 }

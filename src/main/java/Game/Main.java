@@ -3,8 +3,11 @@ package Game;
 import DataStructure.Exceptions.ElementNotFoundException;
 import DataStructure.Exceptions.EmptyCollectionException;
 import DataStructure.Exceptions.NoPathAvailable;
+import ExceptionsGame.InvalidMapException;
+import org.json.simple.parser.ParseException;
 
 import javax.activation.UnsupportedDataTypeException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -34,7 +37,7 @@ public class Main {
     }
 
 
-    public static void main(String[] args) throws EmptyCollectionException, NoPathAvailable, ElementNotFoundException, UnsupportedDataTypeException {
+    public static void main(String[] args) throws EmptyCollectionException, NoPathAvailable, ElementNotFoundException, IOException, InvalidMapException, ParseException {
         GameManagement gameMan = new GameManagement();
         Scanner scanner = new Scanner(System.in);
         Date data = new Date();
@@ -43,6 +46,7 @@ public class Main {
         int option = -1;
         int option2, opt = -1;
         do {
+            gameMan.lerFicheiro("resources/notExists.json", 1);
             menu();
             System.out.println("Insira Opcao");
             option = scanner.nextInt();

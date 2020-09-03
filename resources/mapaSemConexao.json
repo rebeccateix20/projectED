@@ -1,0 +1,14 @@
+{
+"nome": "sexta-feira 13",
+"pontos": 100,
+"mapa": [
+{"aposento": "hall", "fantasma": 0, "ligacoes": ["entrada", "cozinha", "escritorio"]},
+{"aposento": "cozinha", "fantasma": 15, "ligacoes": ["hall", "sala de jantar"]},
+{"aposento": "escritorio", "fantasma": 0, "ligacoes": ["hall", "wc"]},
+{"aposento": "wc", "fantasma": 0, "ligacoes": ["escritorio", "corredor"]},
+{"aposento": "sala de jantar", "fantasma": 0, "ligacoes": ["cozinha", "corredor"]},
+{"aposento": "sala de estar", "fantasma": 15, "ligacoes": ["exterior"]},
+{"aposento": "corredor", "fantasma": 0, "ligacoes": ["wc", "sala de jantar"]},
+{"aposento": "quarto", "fantasma": 20, "ligacoes": ["exterior", "corredor"]}
+]
+} 
