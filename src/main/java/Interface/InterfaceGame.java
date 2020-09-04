@@ -116,7 +116,7 @@ public class InterfaceGame {
             System.out.println("Opcao:");
             Scanner scan = new Scanner(System.in);
             opcao = scan.nextInt();
-        } while(opcao != 1);
+        } while(opcao != 1 && opcao != 0);
         switch(opcao){
             case 1:
                 do{
@@ -170,15 +170,12 @@ public class InterfaceGame {
                         break;
 
                     case 3:
-
                         mapChoiceForClassification();
                         String map = this.pathClassification.split("\\.")[0];
                         ClassificationManagement classMan2 = new ClassificationManagement(map);
                         classMan2.printResults();
                         break;
                 }
-
-
         }
     }
 
