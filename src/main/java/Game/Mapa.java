@@ -37,14 +37,28 @@ public class Mapa {
         return pontos;
     }
 
+    /**
+     * Metodo que devolve a lista dos aposentos
+     * @return
+     */
     public ArrayUnorderedList<Aposento> getAposentos() {
         return aposentos;
     }
 
+
+    /**
+     * Devolve iterador dos aposentos
+     * @return
+     */
     public Iterator<Aposento> getAposentosIterator() {
         return this.aposentos.iterator();
     }
 
+
+    /**
+     * Metodo que conta quando aposentos ha sem fantasma
+     * @return contador de aposentos sem fantasma
+     */
     public int getNumberAposentosSemFantasma() {
         int count = 0;
         for(Aposento ap : this.aposentos){
@@ -55,6 +69,10 @@ public class Mapa {
         return count;
     }
 
+    /**
+     * Metodo que encontra o dano maximo que os fantasmas no jogo podem tirar
+     * @return dano maximo dos fantasmas
+     */
     public int getMaxDamageFantasma() {
         int max = 0;
         for (Aposento ap : this.aposentos) {
@@ -67,6 +85,10 @@ public class Mapa {
         return max;
     }
 
+    /**
+     * Metodo que devolve o iterador dos aposentos sem fantasma
+     * @return iterador dos aposentos sem fantasma
+     */
     public Iterator<Aposento> getAposentosSemFantasmaIterator() {
         ArrayUnorderedList<Aposento> lista = new ArrayUnorderedList<>();
         int custo;
@@ -84,6 +106,10 @@ public class Mapa {
         return lista.iterator();
     }
 
+    /**
+     * Metodo que devolve o numero de aposentos do mapa
+     * @return
+     */
     public int getNAposentos(){
         return this.aposentos.size();
     }

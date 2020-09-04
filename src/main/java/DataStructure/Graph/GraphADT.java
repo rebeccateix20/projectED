@@ -15,21 +15,21 @@ import java.util.Iterator;
 public interface GraphADT<T> {
 
     /**
-     * Adds a vertex to this graph, associating object with vertex.
+     * Adiciona um vertice
      *
-     * @param vertex the vertex to be added to this graph
+     * @param vertex o vertice a ser adicionado
      */
     public void addVertex(T vertex);
 
     /**
-     * Removes a single vertex with the given value from this graph.
+     * remove um vertice
      *
-     * @param vertex the vertex to be removed from this graph
+     * @param vertex vertice a ser removido
      */
     public void removeVertex(T vertex) throws EmptyCollectionException;
 
     /**
-     * Inserts an edge between two vertices of this graph.
+     * insere uma aresta entre dois vertices
      *
      * @param vertex1 the first vertex
      * @param vertex2 the second vertex
@@ -37,7 +37,7 @@ public interface GraphADT<T> {
     public void addEdge(T vertex1, T vertex2);
 
     /**
-     * Removes an edge between two vertices of this graph.
+     * remove uma aresta entre dois vertices
      *
      * @param vertex1 the first vertex
      * @param vertex2 the second vertex
@@ -45,7 +45,7 @@ public interface GraphADT<T> {
     public void removeEdge(T vertex1, T vertex2) throws EmptyCollectionException;
 
     /**
-     * Returns a breadth first iterator starting with the given vertex.
+     * retorn o iterador da travessia em largura começando num vertice
      *
      * @param startVertex the starting vertex
      * @return a breadth first iterator beginning at the given vertex
@@ -53,7 +53,7 @@ public interface GraphADT<T> {
     public Iterator iteratorBFS(T startVertex) throws EmptyCollectionException;
 
     /**
-     * Returns a depth first iterator starting with the given vertex.
+     * retorna o iterador da travessia em profundidado começando num vertice
      *
      * @param startVertex the starting vertex
      * @return a depth first iterator starting at the given vertex
@@ -61,8 +61,7 @@ public interface GraphADT<T> {
     public Iterator iteratorDFS(T startVertex) throws EmptyCollectionException;
 
     /**
-     * Returns an iterator that contains the shortest path between the two
-     * vertices.
+     * retorna um iterador do menor caminho tendo em conta dois vertices
      *
      * @param startVertex  the starting vertex
      * @param targetVertex the ending vertex
@@ -72,28 +71,28 @@ public interface GraphADT<T> {
     public Iterator iteratorShortestPath(T startVertex, T targetVertex) throws EmptyCollectionException;
 
     /**
-     * Returns true if this graph is empty, false otherwise.
+     * retorna verdadeiro se estiver vazia, falso en contrario
      *
      * @return true if this graph is empty
      */
     public boolean isEmpty();
 
     /**
-     * Returns true if this graph is connected, false otherwise.
+     * retorna verdadeiro se for conexo, falso em contrario
      *
      * @return true if this graph is connected
      */
     public boolean isConnected() throws EmptyCollectionException;
 
     /**
-     * Returns the number of vertices in this graph.
+     * retorna o numero de vertices do grafo
      *
      * @return the integer number of vertices in this graph
      */
     public int size();
 
     /**
-     * Returns a string representation of the adjacency matrix.
+     * retorna uma representacao da matriz de adjacencias
      */
     public void printAdjacencyMatrix();
 

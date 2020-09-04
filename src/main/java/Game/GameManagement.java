@@ -5,10 +5,7 @@ import DataStructure.Exceptions.EmptyCollectionException;
 import DataStructure.Exceptions.NoPathAvailable;
 import DataStructure.Graph.Network.ArrayDirectedNetwork;
 import DataStructure.Graph.Network.PathCostVerticeWithElement;
-import DataStructure.list.LinkedList;
-import DataStructure.list.OrderedList.ArrayOrderedList;
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
-import DataStructure.list.UnorderedList.LinkedUnorderedList;
 import DataStructure.list.UnorderedList.UnorderedListADT;
 import DataStructure.stack.ArrayStack;
 import ExceptionsGame.InvalidMapException;
@@ -19,8 +16,6 @@ import org.json.simple.parser.ParseException;
 
 import javax.activation.UnsupportedDataTypeException;
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
@@ -40,6 +35,9 @@ public class GameManagement {
         this.teletransporte = teletransporte;
     }
 
+    /**
+     * Método construtor
+     */
     public GameManagement() {
     }
 
@@ -47,6 +45,18 @@ public class GameManagement {
         return mapa;
     }
 
+    /**
+     * Método responsável por ler o ficheiro
+     * @param ficheiro path do ficheiro
+     * @param dificuldade dificuldade do mapa
+     * @return
+     * @throws InvalidMapException
+     * @throws NoPathAvailable
+     * @throws ElementNotFoundException
+     * @throws EmptyCollectionException
+     * @throws IOException
+     * @throws ParseException
+     */
     public boolean lerFicheiro(String ficheiro, int dificuldade) throws InvalidMapException, NoPathAvailable, ElementNotFoundException, EmptyCollectionException, IOException, ParseException {
         if (ficheiro != "" && dificuldade > 0 && dificuldade < 4) {
             JSONParser parser = new JSONParser();
@@ -97,6 +107,10 @@ public class GameManagement {
 
     }
 
+    /**
+     * Método responsavel por criar a network
+     * @throws ElementNotFoundException
+     */
     public void createNetwork() throws ElementNotFoundException {
         network = new ArrayDirectedNetwork<>();
 
@@ -150,6 +164,9 @@ public class GameManagement {
         }
     }
 
+    /**
+     * Método que permite adicionar os bonus ao mapa
+     */
     public void addBonus() {
         Random random = new Random();
         int option = random.nextInt((3 - 1) + 1) + 1;
@@ -184,6 +201,12 @@ public class GameManagement {
         }
     }
 
+    /**
+     * Método que a partir do nome, devolve o aposento correspondente
+     * @param aposento nome do aposento
+     * @return
+     * @throws ElementNotFoundException
+     */
     public Aposento searchAposento(String aposento) throws ElementNotFoundException {
         UnorderedListADT aposentos = this.mapa.getAposentos();
         Aposento aposento1 = null;
@@ -206,6 +229,14 @@ public class GameManagement {
         return aposento1;
     }
 
+    /**
+     * Método responsavel pela validação do mapa
+     * @return
+     * @throws NoPathAvailable
+     * @throws EmptyCollectionException
+     * @throws ElementNotFoundException
+     * @throws InvalidMapException
+     */
     private boolean validateMap() throws NoPathAvailable, EmptyCollectionException, ElementNotFoundException, InvalidMapException {
         double custo = 0.0;
         int nFantasmas = 0;
@@ -230,6 +261,12 @@ public class GameManagement {
         }
     }
 
+    /**
+     * Método responsavel pelo modo de simulação do jogo
+     * @return
+     * @throws EmptyCollectionException
+     * @throws ElementNotFoundException
+     */
     public String simulation() throws EmptyCollectionException, ElementNotFoundException {
         String s="";
         Iterator<Aposento> iterator = this.network.iteratorShortestPath(this.searchAposento("entrada"), this.searchAposento("exterior"));
@@ -240,6 +277,13 @@ public class GameManagement {
         return s;
     }
 
+    /**
+     * Método responsavel pelo gameplay manual do jogo
+     * @param player
+     * @throws ElementNotFoundException
+     * @throws UnsupportedDataTypeException
+     * @throws EmptyCollectionException
+     */
     public void gameplay(Player player) throws ElementNotFoundException, UnsupportedDataTypeException, EmptyCollectionException {
         this.jogadas = new ArrayStack<>();
         int nUndos = 0;
@@ -347,7 +391,6 @@ public class GameManagement {
                 } else if (opcao == 0) {
                     this.printMap();
                 } else if (opcao == -1 && nUndos != 0) {
-
                     try {
                         this.jogadas.pop();
                         Jogada jog = this.jogadas.peek();
@@ -372,6 +415,10 @@ public class GameManagement {
 
     }
 
+    /**
+     * Método repsonsavel por dar print do mapa
+     * @throws ElementNotFoundException
+     */
     public void printMap() throws ElementNotFoundException {
         Iterator<Aposento> ap = this.mapa.getAposentosIterator();
 
@@ -394,10 +441,20 @@ public class GameManagement {
         }
     }
 
+    /**
+     * Método que devolve um aposento consoante um valor
+     * @param opc
+     * @return
+     */
     private Aposento choice(int opc) {
         return this.network.getElementVertice(opc);
     }
 
+    /**
+     * Método responsavel por mover os fantasmas a cada rodada
+     * @param playerAp
+     * @throws ElementNotFoundException
+     */
     public void moveFantasmas(Aposento playerAp) throws ElementNotFoundException {
         /*for (Aposento ap4 : this.mapa.getAposentos()) {
             System.out.print("APOSENTO: " + ap4.getNome() + " FANTASMAS: ");

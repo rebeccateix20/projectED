@@ -34,9 +34,6 @@ public class Player implements Comparable<Player> {
         this.dificuldade = dificuldade;
     }
 
-    public void setDificuldade(int dificuldade) {
-        this.dificuldade = dificuldade;
-    }
 
     public int getDificuldade() {
         return dificuldade;
@@ -62,6 +59,10 @@ public class Player implements Comparable<Player> {
         this.pontos = pontos;
     }
 
+    /**
+     * Metodo que retira/adiciona pontos ao jogador
+     * @param pontos
+     */
     public void damage(int pontos) {
         this.pontos -= pontos;
     }
@@ -70,6 +71,12 @@ public class Player implements Comparable<Player> {
         return estimateTime;
     }
 
+
+    /**
+     * Metodo que compara o player com outro player consoante os pontos e o tempo
+     * @param t
+     * @return
+     */
     @Override
     public int compareTo(Player t) {
         if (this.getPontos() < t.getPontos()) {
@@ -87,6 +94,11 @@ public class Player implements Comparable<Player> {
         }
     }
 
+
+    /**
+     * Método que imprime o player
+     * @return
+     */
     @Override
     public String toString() {
         return "Player: " + this.nome + ", pontos: " + this.pontos + ", dificuldade: " + this.dificuldade + ", tempo: " + this.getEstimateTime();

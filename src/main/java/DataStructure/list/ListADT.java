@@ -16,42 +16,42 @@ import java.util.Iterator;
 public interface ListADT<T> extends Iterable<T> {
 
     /**
-     * Removes and returns the first element from this DataStructure.list.
+     * remove e devolve o primeiro elemento
      *
      * @return the first element from this DataStructure.list
      */
     public T removeFirst() throws EmptyCollectionException;
 
     /**
-     * Removes and returns the last element from this DataStructure.list.
+     * remove e devolve o ultimo elemento
      *
      * @return the last element from this DataStructure.list
      */
     public T removeLast() throws EmptyCollectionException;
 
     /**
-     * Removes and returns the specified element from this DataStructure.list.
+     * devolve e remove um certo elemento
      *
      * @param element the element to be removed from the DataStructure.list
      */
     public T remove(T element) throws EmptyCollectionException, ElementNotFoundException;
 
     /**
-     * Returns a reference to the first element in this DataStructure.list.
+     * retorna uma referencia do primeiro elemento
      *
      * @return a reference to the first element in this DataStructure.list
      */
     public T first();
 
     /**
-     * Returns a reference to the last element in this DataStructure.list.
+     * reotrna uma referencia ao ultimo elemento
      *
      * @return a reference to the last element in this DataStructure.list
      */
     public T last();
 
     /**
-     * Returns true if this DataStructure.list contains the specified target element.
+     * retorna true se conter um elemento, falso em contrario
      *
      * @param target the target that is being sought in the DataStructure.list
      * @return true if the DataStructure.list contains this element
@@ -59,28 +59,28 @@ public interface ListADT<T> extends Iterable<T> {
     public boolean contains(T target);
 
     /**
-     * Returns true if this DataStructure.list contains no elements.
+     * retorna true se estiver vazia, falso em contrario
      *
      * @return true if this DataStructure.list contains no elements
      */
     public boolean isEmpty();
 
     /**
-     * Returns the number of elements in this DataStructure.list.
+     * retorna o numero de elementos da lista
      *
      * @return the integer representation of number of elements in this DataStructure.list
      */
     public int size();
 
     /**
-     * Returns an iterator for the elements in this DataStructure.list.
+     * retorna um iterador da lista
      *
      * @return an iterator over the elements in this DataStructure.list
      */
     public Iterator<T> iterator();
 
     /**
-     * Returns a string representation of this DataStructure.list.
+     * retorna uma representacao da lista
      *
      * @return a string representation of this DataStructure.list
      */

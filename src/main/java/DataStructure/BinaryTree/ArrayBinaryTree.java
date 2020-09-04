@@ -24,7 +24,7 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
     private final int CAPACITY = 50;
 
     /**
-     * Creates an empty binary tree.
+     * Cria uma arvore binaria vazia
      */
     public ArrayBinaryTree() {
         this.count = 0;
@@ -32,9 +32,9 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
     }
 
     /**
-     * Creates a binary tree with the specified element as its root.
+     * cria uma arvore binaria com o elemento como raiz
      *
-     * @param element the element which will become the root of the new tree
+     * @param element vai ser a raiz da arvore
      */
     public ArrayBinaryTree(T element) {
         this.count = 1;
@@ -75,6 +75,7 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
         return found;
     }
 
+
     @Override
     public T find(T targetElement) throws ElementNotFoundException, EmptyCollectionException {
         if (isEmpty()) {
@@ -96,6 +97,10 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
 
     }
 
+    /**
+     * Iterador in order
+     * @return
+     */
     @Override
     public Iterator<T> iteratorInOrder() {
         ArrayUnorderedList<T> templist = new ArrayUnorderedList<T>();
@@ -113,6 +118,10 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
         }
     }
 
+    /**
+     * Iterador pre order
+     * @return
+     */
     @Override
     public Iterator<T> iteratorPreOrder() {
         ArrayUnorderedList<T> templist = new ArrayUnorderedList<T>();
@@ -130,6 +139,10 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
         }
     }
 
+    /**
+     * iterador post order
+     * @return
+     */
     @Override
     public Iterator<T> iteratorPostOrder() {
         ArrayUnorderedList<T> templist = new ArrayUnorderedList<T>();
@@ -147,6 +160,11 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
         }
     }
 
+    /**
+     * iterador level order
+     * @return
+     * @throws EmptyCollectionException
+     */
     @Override
     public Iterator<T> iteratorLevelOrder() throws EmptyCollectionException {
         ArrayUnorderedList<T> templist = new ArrayUnorderedList<T>();

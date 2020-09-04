@@ -14,8 +14,7 @@ import DataStructure.list.ListADT;
  */
 public interface OrderedListADT<T> extends ListADT<T> {
     /**
-     * Adds the specified element to this DataStructure.list at
-     * the proper location
+     * adiciona o elemento na posicao adequada
      *
      * @param element the element to be added to this DataStructure.list
      */

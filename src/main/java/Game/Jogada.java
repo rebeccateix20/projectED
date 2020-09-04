@@ -10,10 +10,15 @@ public class Jogada {
     private Aposento currentAposento;
     private int points;
 
+    /**
+     * Metodo construtor da jogada
+     * @param aposentos aposentos do mapa
+     * @param currentAposento aposento do jogador
+     * @param points pontos do jogador
+     */
     public Jogada(ArrayUnorderedList<Aposento> aposentos, Aposento currentAposento, int points) {
         this.aposentos = new ArrayUnorderedList<>();
 
-        //Não igualar, temos de fazer um copy
         Iterator<Aposento> aps = aposentos.iterator();
         while(aps.hasNext()){
             Aposento ap = aps.next();
@@ -27,18 +32,35 @@ public class Jogada {
         this.points = points;
     }
 
+    /**
+     * Metodo que devolve os aposentos da jogada
+     * @return
+     */
     public ArrayUnorderedList<Aposento> getAposentos() {
         return aposentos;
     }
 
+    /**
+     * Metodo que devolve o aposento atual do jogador na jogada
+     * @return
+     */
     public Aposento getCurrentAposento() {
         return currentAposento;
     }
 
+    /**
+     * Metodo que devolve os pontos do player na jogada
+     * @return
+     */
     public int getPoints() {
         return points;
     }
 
+
+    /**
+     * Metodo responsavel por imprimir a jogada
+     * @return
+     */
     @Override
     public String toString() {
         String s = "Jogada{" +

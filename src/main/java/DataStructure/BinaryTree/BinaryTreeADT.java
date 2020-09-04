@@ -16,29 +16,29 @@ import java.util.Iterator;
 public interface BinaryTreeADT<T> {
 
     /**
-     * Returns a reference to the root element
+     * retorna uma referencia para o eleemnto raiz
      *
      * @return a reference to the root
      */
     public T getRoot() throws EmptyCollectionException;
 
     /**
-     * Returns true if this binary tree is empty and false otherwise.
+     * retorna verdadeiro se estiver vazia e falso em contrario
      *
      * @return true if this binary tree is empty
      */
     public boolean isEmpty();
 
     /**
-     * Returns the number of elements in this binary tree.
+     * retorna o numero de elementos da arvore
      *
      * @return the integer number of elements in this tree
      */
     public int size() throws EmptyCollectionException;
 
     /**
-     * Returns true if the binary tree contains an element that matches the
-     * specified element and false otherwise.
+     * retorna verdadeiro se a arvore tiver um elemento que corresponda ao passado como parametro
+     * falso em contrario
      *
      * @param targetElement the element being sought in the tree
      * @return true if the tree contains the target element
@@ -46,8 +46,7 @@ public interface BinaryTreeADT<T> {
     public boolean contains(T targetElement);
 
     /**
-     * Returns a reference to the specified element if it is found in this
-     * binary tree. Throws an exception if the specified element is not found.
+     * retorna uma referencia para o elemento que procura caso exista
      *
      * @param targetElement the element being sought in the tree
      * @return a reference to the specified element
@@ -55,7 +54,7 @@ public interface BinaryTreeADT<T> {
     public T find(T targetElement) throws ElementNotFoundException, EmptyCollectionException;
 
     /**
-     * Returns the string representation of the binary tree.
+     * retorna uma string da arvore
      *
      * @return a string representation of the binary tree
      */

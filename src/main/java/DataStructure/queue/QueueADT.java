@@ -13,42 +13,42 @@ import DataStructure.Exceptions.EmptyCollectionException;
 public interface QueueADT<T> {
 
     /**
-     * Adds one element to the rear of this DataStructure.queue.
+     * adiciona um elemento no final da queue
      *
      * @param element the element to be added to the rear of this DataStructure.queue
      */
     public void enqueue(T element);
 
     /**
-     * Removes and returns the element at the front of this DataStructure.queue.
+     * devolve e remove o primeiro elemento da queue
      *
      * @return the element at the front of this DataStructure.queue
      */
     public T dequeue() throws EmptyCollectionException;
 
     /**
-     * Returns without removing the element at the front of this DataStructure.queue.
+     * retorna o primeiro elemento
      *
      * @return the first element in this DataStructure.queue
      */
     public T first() throws EmptyCollectionException;
 
     /**
-     * Returns true if this DataStructure.queue contains no elements.
+     * verifica se esta vazia
      *
      * @return true if this DataStructure.queue is empty
      */
     public boolean isEmpty();
 
     /**
-     * Returns the number of elements in this DataStructure.queue.
+     * devovlle o numero de elementos
      *
      * @return the integer representation of the size of this DataStructure.queue
      */
     public int size();
 
     /**
-     * Returns a string representation of this DataStructure.queue.
+     * devolve uma string da queue
      *
      * @return the string representation of this DataStructure.queue
      */

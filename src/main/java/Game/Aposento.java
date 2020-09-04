@@ -20,6 +20,13 @@ public class Aposento {
     private ArrayUnorderedList<String> ligacoes;
     private boolean teletransporte;
 
+    /**
+     * Método construtor
+     * @param nome
+     * @param fantasmas
+     * @param ligacoes
+     * @param costTotal
+     */
     public Aposento(String nome, Integer[] fantasmas, ArrayUnorderedList<String> ligacoes, int costTotal) {
         this.nome = nome;
         this.fantasmas = fantasmas;
@@ -27,18 +34,34 @@ public class Aposento {
         this.costTotal = costTotal;
     }
 
+    /**
+     * Devolve o custo total de fantasmas neste aposento
+     * @return custo total fantasmas no aposento
+     */
     public int getCostTotal() {
         return costTotal;
     }
 
+    /**
+     * define o custo total de fantasmas neste aposento
+     * @param costTotal
+     */
     public void setCostTotal(int costTotal) {
         this.costTotal += costTotal;
     }
 
+    /**
+     * Define o teletransporte para eeste aposento
+     * @param teletransporte
+     */
     public void setTeletransporte(boolean teletransporte) {
         this.teletransporte = teletransporte;
     }
 
+    /**
+     * Devolve se o aposento é tem o bonus de teletransporte
+     * @return
+     */
     public boolean isTeletransporte() {
         return teletransporte;
     }
@@ -47,35 +70,52 @@ public class Aposento {
         return nome;
     }
 
+    /**
+     * Metodo que devolve a lista de fantasmas do aposento
+     * @return lista de fantasmas
+     */
     public Integer[] getFantasmas() {
         return fantasmas;
     }
 
+
+    /**
+     * Método responsavel por devolver uo valor do fantasma num determinado indice
+     * @param index indice do fantasma
+     * @return valor do fantasma
+     */
     public int getFantasma(int index) {
         return this.fantasmas[index];
     }
 
+    /**
+     * Devolde uma lista das ligacoes do aposento
+     * @return lista de ligacoes do aposento
+     */
     public ArrayUnorderedList<String> getLigacoes() {
         return ligacoes;
     }
 
+    /**
+     * Metodo que devolve iterador das ligacoes do aposento
+     * @return iterador das ligacoes do aposento
+     */
     public Iterator<String> getLigacoesIterator() {
         return this.ligacoes.iterator();
     }
 
+    /**
+     * Método responsável por atribuit um valor a um determinado fantasma
+     * @param index
+     * @param value
+     */
     public void setFantasma(int index, int value) {
         this.fantasmas[index] = value;
     }
 
-    /*
-    public int getCostFantasmas() {
-        int cost = 0;
-        for (int i = 0; i < fantasmas.length; i++) {
-            cost += fantasmas[i];
-        }
-        return cost;
-    }*/
-
+    /**
+     * Método responsável por dar shift dos fantasmas quando estes são movidos para outro aposento
+     */
     public void shiftFantasmas() {
         for (int i = 0; i < this.fantasmas.length-1; i++) {
             this.fantasmas[i] = this.fantasmas[i+1];
@@ -83,6 +123,10 @@ public class Aposento {
         this.fantasmas[this.fantasmas.length-1] = 0;
     }
 
+    /**
+     * Metodo que devolve o numero de fantasmas no aposento
+     * @return numero de fantasmas
+     */
     public int getNFantasmas(){
         int count = 0;
         for(int i=0; i<this.fantasmas.length; i++){

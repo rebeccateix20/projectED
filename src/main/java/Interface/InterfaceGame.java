@@ -19,6 +19,9 @@ public class InterfaceGame {
     private String pathClassification;
     private ClassificationManagement classMan;
 
+    /**
+     * Menu das dificuldades
+     */
     private void menuDif() {
         System.out.println("MENU DIF\n");
         System.out.println("1. BASICO");
@@ -27,6 +30,9 @@ public class InterfaceGame {
         System.out.println("0. SAIR");
     }
 
+    /**
+     * Menu principal
+     */
     private void menu() {
         System.out.println("MENU \n");
         System.out.println("1. COMEÇAR");
@@ -34,6 +40,9 @@ public class InterfaceGame {
     }
 
 
+    /**
+     * Menu do modo de jogo ou classificações
+     */
     private void menuSimOrManOrClass() {
         System.out.println("MENU \n");
         System.out.println("1. Simulação");
@@ -42,6 +51,9 @@ public class InterfaceGame {
         System.out.println("0. SAIR");
     }
 
+    /**
+     * Apresenta os mapas possiveis
+     */
     private void mapChoice() {
         int opSec;
         File directory = new File("resources/mapas/");
@@ -62,6 +74,9 @@ public class InterfaceGame {
         this.path = "resources/mapas/" + listFiles[(opSec - 1)];
     }
 
+    /**
+     * Apresenta os mapa possiveis para ver as classificacoes
+     */
     private void mapChoiceForClassification() {
         int opSec;
         File directory = new File("resources/results/");
@@ -83,7 +98,15 @@ public class InterfaceGame {
     }
 
 
-
+    /**
+     * Interface do jogo
+     * @throws EmptyCollectionException
+     * @throws ParseException
+     * @throws ElementNotFoundException
+     * @throws IOException
+     * @throws NoPathAvailable
+     * @throws InvalidMapException
+     */
     public InterfaceGame() throws EmptyCollectionException, ParseException, ElementNotFoundException, IOException, NoPathAvailable, InvalidMapException {
         GameManagement gameMan = new GameManagement();
         int opcao, op2, op3,op4;

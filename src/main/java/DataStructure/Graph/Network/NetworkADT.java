@@ -14,7 +14,7 @@ import DataStructure.Graph.GraphADT;
  */
 public interface NetworkADT<T> extends GraphADT<T> {
     /**
-     * Inserts an edge between two vertices of this graph.
+     * insere uma aresta entre dois vertices com o peso
      *
      * @param vertex1 the first vertex
      * @param vertex2 the second vertex
@@ -23,7 +23,7 @@ public interface NetworkADT<T> extends GraphADT<T> {
     public void addEdge(T vertex1, T vertex2, double weight);
 
     /**
-     * Returns the weight of the shortest path in this network.
+     * retorna o peso do caminho mais barato
      *
      * @param vertex1 the first vertex
      * @param vertex2 the second vertex

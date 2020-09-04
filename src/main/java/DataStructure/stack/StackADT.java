@@ -14,42 +14,42 @@ import DataStructure.Exceptions.EmptyCollectionException;
 public interface StackADT<T> {
 
     /**
-     * Adds one element to the top of this DataStructure.stack.
+     * adiciona um elemento ao topo da stack
      *
      * @param element element to be pushed onto DataStructure.stack
      */
     public void push(T element);
 
     /**
-     * Removes and returns the top element from this DataStructure.stack.
+     * devolve e remove o elemento no topo da stack
      *
      * @return T element removed from the top of the DataStructure.stack
      */
     public T pop() throws EmptyCollectionException;
 
     /**
-     * Returns without removing the top element of this DataStructure.stack.
+     * retorna o elemento do topo
      *
      * @return T element on top of the DataStructure.stack
      */
     public T peek() throws EmptyCollectionException;
 
     /**
-     * Returns true if this DataStructure.stack contains no elements.
+     * retorna true se estiver vazia
      *
      * @return boolean whether or not this DataStructure.stack is empty
      */
     public boolean isEmpty();
 
     /**
-     * Returns the number of elements in this DataStructure.stack.
+     * devolve o numero de elementos
      *
      * @return int number of elements in this DataStructure.stack
      */
     public int size();
 
     /**
-     * Returns a string representation of this DataStructure.stack.
+     * devovle uma representacao da stack
      *
      * @return String representation of this DataStructure.stack
      */

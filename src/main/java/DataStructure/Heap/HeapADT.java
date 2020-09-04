@@ -14,21 +14,21 @@ import DataStructure.Exceptions.EmptyCollectionException;
 public interface HeapADT<T> extends BinaryTreeADT<T> {
 
     /**
-     * Adds the specified object to this heap.
+     * adiciona um elemento à heap
      *
      * @param obj the element to added to this head
      */
     public void addElement(T obj);
 
     /**
-     * Removes element with the lowest value from this heap.
+     * remove o elemento menor
      *
      * @return the element with the lowest value from this heap
      */
     public T removeMin() throws EmptyCollectionException;
 
     /**
-     * Returns a reference to the element with the lowest value in this heap.
+     * retorna uma referencia para o menor elemento
      *
      * @return a reference to the element with the lowest value in this heap
      */
