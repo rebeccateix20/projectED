@@ -17,28 +17,29 @@ public class Player implements Comparable<Player> {
 
     private String nome;
     private int pontos;
-    private String mapa;
-    private Date data;
     private int dificuldade;
     private Instant startTime;
     private float estimateTime;
 
 
-    public Player(String nome, int pontos, String mapa, Date data, int dificuldade) {
+    public Player(String nome, int dificuldade) {
         this.nome = nome;
-        this.pontos = pontos;
-        this.mapa = mapa;
-        this.data = data;
         this.dificuldade = dificuldade;
     }
 
-    public Player(String nome, int pontos, String mapa, Date data, int dificuldade, float estimateTime) {
+    public Player(String nome, int pontos, float estimateTime, int dificuldade) {
         this.nome = nome;
         this.pontos = pontos;
-        this.mapa = mapa;
-        this.data = data;
-        this.dificuldade = dificuldade;
         this.estimateTime = estimateTime;
+        this.dificuldade = dificuldade;
+    }
+
+    public void setDificuldade(int dificuldade) {
+        this.dificuldade = dificuldade;
+    }
+
+    public int getDificuldade() {
+        return dificuldade;
     }
 
     public String getNome() {
@@ -54,23 +55,7 @@ public class Player implements Comparable<Player> {
     }
 
     public int getPontos() {
-        return pontos;
-    }
-
-    public String getMapa() {
-        return mapa;
-    }
-
-    public Date getData() {
-        return data;
-    }
-
-    public int getDificuldade() {
-        return dificuldade;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+        return this.pontos;
     }
 
     public void setPontos(int pontos) {
@@ -79,26 +64,6 @@ public class Player implements Comparable<Player> {
 
     public void damage(int pontos) {
         this.pontos -= pontos;
-    }
-
-    public void bonus(int bonus) {
-        this.pontos += bonus;
-    }
-
-    public void setMapa(String mapa) {
-        this.mapa = mapa;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
-    }
-
-    public void setDificuldade(int dificuldade) {
-        this.dificuldade = dificuldade;
-    }
-
-    public Instant getStartTime() {
-        return startTime;
     }
 
     public float getEstimateTime() {
@@ -124,7 +89,7 @@ public class Player implements Comparable<Player> {
 
     @Override
     public String toString() {
-        return "Utilizador: " + this.nome + ", " + this.pontos + " pontos" + ", dificuldade: " + this.dificuldade + ", " + "data: " + new SimpleDateFormat("dd-MM-yyyy HH:mm").format(data) + ", tempo: " + this.getEstimateTime();
+        return "Player: " + this.nome + ", pontos: " + this.pontos + ", dificuldade: " + this.dificuldade + ", tempo: " + this.getEstimateTime();
 
     }
 }

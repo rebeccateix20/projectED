@@ -56,7 +56,6 @@ public class ArrayStack<T> implements StackADT<T> {
         if (size() == stack.length) {
             expandCapacity();
         }
-        System.out.println("ELEMENTO A ADICIONAR :::::::::::: " + element.toString());
         stack[top] = element;
         top++;
     }

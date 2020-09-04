@@ -5,10 +5,7 @@
  */
 package Game;
 
-import DataStructure.Exceptions.ElementNotFoundException;
 import DataStructure.list.UnorderedList.ArrayUnorderedList;
-import DataStructure.list.UnorderedList.UnorderedListADT;
-import ExceptionsGame.CoexistsGhostsException;
 
 import java.util.Iterator;
 
@@ -19,19 +16,6 @@ public class Mapa {
     private String nome;
     private int pontos;
     private ArrayUnorderedList<Aposento> aposentos;
-
-    /*
-    @Override
-    public String toString() {
-        String s = "Mapa{" +
-                "nome='" + nome + '\'' +
-                ", pontos=" + pontos +
-                ", aposentos=";
-        for (Aposento ap : this.aposentos) {
-            s += ap.getNome() + " " + " " + ap.getFantasma() + " ->";
-        }
-        return s;
-    }*/
 
     public Mapa(String nome, int pontos, ArrayUnorderedList<Aposento> aposentos) {
         this.nome = nome;
@@ -61,22 +45,10 @@ public class Mapa {
         return this.aposentos.iterator();
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setPontos(int pontos) {
-        this.pontos = pontos;
-    }
-
-    public void setAposentos(ArrayUnorderedList<Aposento> aposentos) {
-        this.aposentos = aposentos;
-    }
-
     public int getNumberAposentosSemFantasma() {
         int count = 0;
         for(Aposento ap : this.aposentos){
-            if(ap.getCostTotal() <= 0){
+            if(ap.getCostTotal() <= 0 && !ap.getNome().equals("entrada") && !ap.getNome().equals("exterior")){
                 count++;
             }
         }

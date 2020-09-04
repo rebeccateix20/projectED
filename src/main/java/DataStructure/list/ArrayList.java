@@ -122,7 +122,7 @@ public class ArrayList<T> implements ListADT<T> {
         String list = "\n";
 
         for (int i = 0; i < this.rear; i++) {
-            list = list + "Posição " + i + ": " + this.list[i] + "\n";
+            list = list + "" + i + " Lugar: " + this.list[i] + "\n";
         }
 
         return list;

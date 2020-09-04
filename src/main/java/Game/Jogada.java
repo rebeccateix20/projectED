@@ -21,7 +21,7 @@ public class Jogada {
             for(int i=0; i<ap.getFantasmas().length; i++){
                 newFantasmas[i] = ap.getFantasma(i);
             }
-            this.aposentos.addToRear(new Aposento(ap.getNome(),newFantasmas,ap.getLigacoes(), ap.getCostFantasmas()));
+            this.aposentos.addToRear(new Aposento(ap.getNome(),newFantasmas,ap.getLigacoes(), ap.getCostTotal()));
         }
         this.currentAposento = currentAposento;
         this.points = points;

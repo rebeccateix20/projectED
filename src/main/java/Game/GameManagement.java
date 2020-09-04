@@ -29,28 +29,22 @@ import java.util.Scanner;
 public class GameManagement {
     private Mapa mapa;
     private ArrayDirectedNetwork<Aposento> network;
-    private ArrayOrderedList<Player> resultados;
     private int dificuldade;
     private boolean teletransporte;
     private Aposento escudo;
     private Aposento acrescimo;
     private ArrayStack<Jogada> jogadas;
 
-    public ArrayOrderedList<Player> getResultados() {
-        return resultados;
-    }
 
     public void setTeletransporte(boolean teletransporte) {
         this.teletransporte = teletransporte;
     }
 
-    public GameManagement(Mapa mapa, ArrayDirectedNetwork<Aposento> network, ArrayOrderedList<Player> resultados) {
-        this.mapa = mapa;
-        this.network = network;
-        this.resultados = resultados;
+    public GameManagement() {
     }
 
-    public GameManagement() {
+    public Mapa getMapa() {
+        return mapa;
     }
 
     public boolean lerFicheiro(String ficheiro, int dificuldade) throws InvalidMapException, NoPathAvailable, ElementNotFoundException, EmptyCollectionException, IOException, ParseException {
@@ -111,7 +105,7 @@ public class GameManagement {
         ArrayUnorderedList<String> ligacoesSaida = new ArrayUnorderedList<>();
         boolean found = false;
 
-        Iterator<Aposento> it = this.mapa.getAposentos().iterator();
+        Iterator<Aposento> it = this.mapa.getAposentosIterator();
 
         while (it.hasNext() && !found) {
             Aposento ap = it.next();
@@ -133,12 +127,14 @@ public class GameManagement {
         this.mapa.getAposentos().addToFront(entrada);
         this.mapa.getAposentos().addToRear(exterior);
 
-        for (Aposento aposento : mapa.getAposentos()) {
-            network.addVertex(aposento);
+        Iterator<Aposento> aps = this.mapa.getAposentosIterator();
+        while(aps.hasNext()){
+            Aposento ap = aps.next();
+            network.addVertex(ap);
         }
 
         //Para cada aposento vai criar as arestas
-        Iterator<Aposento> iterator = this.mapa.getAposentos().iterator();
+        Iterator<Aposento> iterator = this.mapa.getAposentosIterator();
 
         while (iterator.hasNext()) {
             Aposento ap = iterator.next();
@@ -148,7 +144,7 @@ public class GameManagement {
                 String lig = iterator1.next();
 
                 if (!lig.equals("entrada")) {
-                    this.network.addEdge(this.searchAposento(ap.getNome()), this.searchAposento(lig), ap.getCostFantasmas());
+                    this.network.addEdge(this.searchAposento(ap.getNome()), this.searchAposento(lig), ap.getCostTotal());
                 }
             }
         }
@@ -174,6 +170,7 @@ public class GameManagement {
                         Random r = new Random();
                         int dano = r.nextInt((this.mapa.getMaxDamageFantasma() - 1) + 1) + 1;
                         aposento.setCostTotal(-dano);
+                        System.out.println("VALOR ESCUDO :::::::::::::: " + dano);
                         this.escudo = aposento;
                         break;
 
@@ -187,7 +184,7 @@ public class GameManagement {
         }
     }
 
-    private Aposento searchAposento(String aposento) throws ElementNotFoundException {
+    public Aposento searchAposento(String aposento) throws ElementNotFoundException {
         UnorderedListADT aposentos = this.mapa.getAposentos();
         Aposento aposento1 = null;
         boolean found = false;
@@ -233,13 +230,14 @@ public class GameManagement {
         }
     }
 
-    public void simulation() throws EmptyCollectionException, ElementNotFoundException {
+    public String simulation() throws EmptyCollectionException, ElementNotFoundException {
+        String s="";
         Iterator<Aposento> iterator = this.network.iteratorShortestPath(this.searchAposento("entrada"), this.searchAposento("exterior"));
         while (iterator.hasNext()) {
             Aposento ap = iterator.next();
-            System.out.print(ap.getNome() + " - ");
+            s+= ap.getNome() + " - ";
         }
-        System.out.print("\n");
+        return s;
     }
 
     public void gameplay(Player player) throws ElementNotFoundException, UnsupportedDataTypeException, EmptyCollectionException {
@@ -270,7 +268,7 @@ public class GameManagement {
             int i = 0;
 
             while (it.hasNext()) {
-                Iterator<Aposento> itr = this.mapa.getAposentos().iterator();
+                Iterator<Aposento> itr = this.mapa.getAposentosIterator();
                 i = 0;
                 String ap2 = it.next();
 
@@ -306,11 +304,9 @@ public class GameManagement {
                         ap.setTeletransporte(false);
                     }
 
-                    if (ap.getFantasma(0) > 0 && !this.teletransporte && this.acrescimo == null && this.escudo == null) {
+                    if (ap.getCostTotal() > 0 && !this.teletransporte) {
                         System.out.println("BOO! Apareceu um fantasma!");
-
-                    } else if (ap.getFantasma(0) > 0 && this.teletransporte) {
-                        System.out.println("ENTROU NO TELETRANSPORTE");
+                    } else if (ap.getCostTotal() > 0 && this.teletransporte) {
                         Iterator<Aposento> apSemFantasmas = this.mapa.getAposentosSemFantasmaIterator();
                         Random random2 = new Random();
                         int i2 = random2.nextInt(this.mapa.getNumberAposentosSemFantasma());
@@ -325,13 +321,11 @@ public class GameManagement {
                         }
                     } else if (ap.getCostTotal() < 0 && this.escudo != null && ap.getNome().equals(this.escudo.getNome())) {
                         System.out.println("ENTROU ESCUDO");
-                        player.damage(ap.getCostTotal());
                         Aposento apTemp = this.escudo;
                         apTemp.setCostTotal(0);
                         this.escudo = null;
                     } else if (ap.getCostTotal() < 0 && this.acrescimo != null && ap.getNome().equals(this.acrescimo.getNome())) {
                         System.out.println("ENTROU ACRESCIMO ");
-                        player.damage(ap.getCostTotal());
                         Aposento apTemp = this.acrescimo;
                         apTemp.setCostTotal(0);
                         this.acrescimo = null;
@@ -375,12 +369,11 @@ public class GameManagement {
         player.setEstimateTime();
         System.out.println("TERMINOU!");
         System.out.println("Obteve: " + player.getPontos() + " pontos");
-        this.addResults(player.getNome(), player.getPontos(), this.mapa.getNome(), this.dificuldade, player.getEstimateTime());
 
     }
 
-    private void printMap() throws ElementNotFoundException {
-        Iterator<Aposento> ap = this.mapa.getAposentos().iterator();
+    public void printMap() throws ElementNotFoundException {
+        Iterator<Aposento> ap = this.mapa.getAposentosIterator();
 
         while (ap.hasNext()) {
             Aposento apo = ap.next();
@@ -391,8 +384,8 @@ public class GameManagement {
 
             while (lig.hasNext()) {
                 Aposento apCheck = this.searchAposento(lig.next());
-                if (apCheck.getCostFantasmas() > 0) {
-                    System.out.print(" -> " + apCheck.getNome() + "(FANTASMA! PERDES " + apCheck.getCostFantasmas() + " PONTOS)");
+                if (apCheck.getCostTotal() > 0) {
+                    System.out.print(" -> " + apCheck.getNome() + "(FANTASMA! PERDES " + apCheck.getCostTotal() + " PONTOS)");
                 } else {
                     System.out.print(" -> " + apCheck.getNome());
                 }
@@ -405,37 +398,40 @@ public class GameManagement {
         return this.network.getElementVertice(opc);
     }
 
-    private void moveFantasmas(Aposento playerAp) throws ElementNotFoundException {
-        for (Aposento ap4 : this.mapa.getAposentos()) {
+    public void moveFantasmas(Aposento playerAp) throws ElementNotFoundException {
+        /*for (Aposento ap4 : this.mapa.getAposentos()) {
             System.out.print("APOSENTO: " + ap4.getNome() + " FANTASMAS: ");
             Integer[] fan = ap4.getFantasmas();
             for (int i = 0; i < fan.length; i++) {
                 System.out.print(fan[i]);
             }
+            System.out.print(" CUSTO TOTAL: " + ap4.getCostTotal());
             System.out.println();
-        }
+        }*/
 
         for (Aposento ap : this.mapa.getAposentos()) {
-            if (ap.getCostFantasmas() > 0) {
+            if (ap.getCostTotal() > 0) {
                 Iterator<String> it = ap.getLigacoesIterator();
                 while (it.hasNext()) {
                     Aposento ap2 = this.searchAposento(it.next());
                     int j = 0;
                     while (j < ap.getFantasmas().length) {
                         if (ap.getFantasma(j) != 0) {
-                            if (ap2.getCostFantasmas() == 0 && !ap2.equals(playerAp) && !ap2.equals(this.searchAposento("exterior"))) {
+                            if (ap2.getCostTotal() == 0 && !ap2.equals(playerAp) && !ap2.equals(this.searchAposento("exterior"))) {
+
                                 ap2.setCostTotal(ap.getFantasma(j));
                                 ap2.setFantasma(0, ap.getFantasma(j));
 
-                                ap.setFantasma(j, 0);
                                 ap.setCostTotal(-ap.getFantasma(j));
+                                ap.setFantasma(j, 0);
+
 
                                 Iterator<String> it2 = ap2.getLigacoesIterator();
                                 while (it2.hasNext()) {
                                     Aposento apUpdate = this.searchAposento(it2.next());
                                     this.network.removeEdge(ap2, apUpdate);
                                     this.network.removeEdge(apUpdate, ap2);
-                                    this.network.addEdge(apUpdate, ap2, ap2.getCostFantasmas());
+                                    this.network.addEdge(apUpdate, ap2, ap2.getCostTotal());
                                     this.network.addEdge(ap2, apUpdate, 0);
                                 }
 
@@ -452,7 +448,7 @@ public class GameManagement {
                         j++;
                     }
                     //shift do fantasma para a posição 0
-                    if (ap.getCostFantasmas() != 0 && ap.getFantasma(0) == 0) {
+                    if (ap.getCostTotal() != 0 && ap.getFantasma(0) == 0) {
                         ap.shiftFantasmas();
                     }
                 }
@@ -462,50 +458,6 @@ public class GameManagement {
 
     }
 
-    public void loadResults() {
-        File file = new File("resources/results.csv");
-        this.resultados = new ArrayOrderedList<>();
-        try {
-            Scanner scanner = new Scanner(file);
-
-            scanner.nextLine();
-            while (scanner.hasNextLine()) {
-                String[] resultado = scanner.nextLine().split(",");
-                this.resultados.add(new Player(resultado[0], Integer.parseInt(resultado[1]), resultado[2], new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(resultado[3]), Integer.parseInt(resultado[4]), Float.parseFloat(resultado[5])));
-            }
-            scanner.close();
-
-            System.out.println("Resultados carregados");
-        } catch (FileNotFoundException e) {
-            System.out.println("Ficheiro nao existe");
-        } catch (Exception e) {
-            System.out.println("Erro interno");
-        }
-    }
-
-    public void saveResults() {
-        File file = new File("resources/results.csv");
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write("nome,pontos,mapa,data,dificuldade,time");
-            for (Player resultado : this.resultados) {
-                fileWriter.write("\n" + resultado.getNome() + "," + resultado.getPontos() + "," + resultado.getMapa() + "," + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(resultado.getData()) + "," + resultado.getDificuldade() + "," + resultado.getEstimateTime());
-            }
-            fileWriter.close();
-
-            System.out.println("Resultados Guardados");
-        } catch (FileNotFoundException e) {
-            System.out.println("Ficheiro não encontrado");
-        } catch (Exception e) {
-            System.out.println("Erro interno");
-        }
-    }
-
-    public void addResults(String nome_jogador, int pontos, String nome_mapa, int dificuladade, float time) throws UnsupportedDataTypeException {
-        loadResults();
-        this.resultados.add(new Player(nome_jogador, pontos, nome_mapa, new Date(), dificuladade, time));
-        saveResults();
-    }
 
 
 }
